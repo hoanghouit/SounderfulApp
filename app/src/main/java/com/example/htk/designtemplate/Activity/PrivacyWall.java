@@ -55,11 +55,19 @@ public class PrivacyWall extends AppCompatActivity {
         p.setTitle("Mashup Em gái mưa (Hương Tràm) - Từ hôm nay (Chi Pu)| Ghitar version");
         p.setUrlAvatar(url1);
         p.setUrlImage(url_image);
+        p.setUserName("hoanghtk3108");
         postArray.add(p);
 
         Post pi = new Post();
         pi.setTitle("em gái mưa");
+        pi.setUserName("hoanghtk3108");
         postArray.add(pi);
+
+        Post pio = new Post();
+        pio.setTitle("Ngày em đến");
+        pio.setUserName("hoanghtk3108");
+        postArray.add(pio);
     }
+
 
 }

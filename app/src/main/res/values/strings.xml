@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">DesignTemplate</string>
     <string name="title_activity_privacy_wall">PrivacyWall</string>
+    <string name="following">đang theo dõi</string>
+    <string name="follow">theo dõi</string>
+    <string name="post">bài đăng</string>
+    <string name="following_eng">follow</string>
+    <string name="follower_eng">follower</string>
+    <string name="edit_privacy_wall">chỉnh sửa trang cá nhân</string>
+
 </resources>

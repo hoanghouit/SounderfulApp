@@ -2,6 +2,7 @@ package com.example.htk.designtemplate.Activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -44,27 +45,36 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, PrivacyWall.class);
-                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
 
+        // set sample current user
+        SharedPreferences sharedPreferences= getSharedPreferences("user",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putString("userName","hoanghtk3108");
+        editor.commit();
 
     }
     public void addPost(){
         String url1="http://genknews.genkcdn.vn/2017/smile-emojis-icon-facebook-funny-emotion-women-s-premium-long-sleeve-t-shirt-1500882676711.jpg";
         String url_image="https://images.vexels.com/media/users/6821/74972/raw/1054e351afe112bca797a70d67d93f9e-purple-daisies-blue-background.jpg";
+
         Post p = new Post();
         p.setTitle("Mashup Em gái mưa (Hương Tràm) - Từ hôm nay (Chi Pu)| Ghitar version");
         p.setUrlAvatar(url1);
         p.setUrlImage(url_image);
+        p.setUserName("hoanghtk3108");
         postArray.add(p);
 
         Post pi = new Post();
         pi.setTitle("em gái mưa");
+        pi.setUserName("yudaidang");
         postArray.add(pi);
+
         Post pio = new Post();
-        pio.setTitle("ngày em đến");
+        pio.setTitle("Ngày em đến");
+        pio.setUserName("hoanghtk3108");
         postArray.add(pio);
     }
 

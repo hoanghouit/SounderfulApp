@@ -13,7 +13,7 @@
 
     <style name="noActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimaryDark">@color/colorLittleGray</item>
+        <item name="colorPrimaryDark">@color/colorGray</item>
     </style>
 
 </resources>
