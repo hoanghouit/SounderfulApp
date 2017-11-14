@@ -60,9 +60,6 @@ public class PrivacyWall extends AppCompatActivity {
         Post pi = new Post();
         pi.setTitle("em gái mưa");
         postArray.add(pi);
-        Post pio = new Post();
-        pio.setTitle("ngày em đến");
-        postArray.add(pio);
     }
 
 }
