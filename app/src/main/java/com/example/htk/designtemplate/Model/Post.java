@@ -8,13 +8,10 @@ public class Post {
     private int postId;
     private String title;
     private String userName;
-    private String urlAvatar;
     private String dateTime;
     private String urlImage;
     private String urlTrack;
     private String description;
-    private String likeNumber;
-    private String commentNumber;
     private String listenNumber;
 
 
@@ -40,14 +37,6 @@ public class Post {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getUrlAvatar() {
-        return urlAvatar;
-    }
-
-    public void setUrlAvatar(String urlAvatar) {
-        this.urlAvatar = urlAvatar;
     }
 
     public String getDateTime() {
@@ -80,22 +69,6 @@ public class Post {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getLikeNumber() {
-        return likeNumber;
-    }
-
-    public void setLikeNumber(String likeNumber) {
-        this.likeNumber = likeNumber;
-    }
-
-    public String getCommentNumber() {
-        return commentNumber;
-    }
-
-    public void setCommentNumber(String commentNumber) {
-        this.commentNumber = commentNumber;
     }
 
     public String getListenNumber() {

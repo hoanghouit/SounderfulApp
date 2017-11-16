@@ -22,7 +22,9 @@
             android:name=".Activity.PrivacyWall"
             android:label="@string/title_activity_privacy_wall"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Activity.FriendWall"></activity>
+        <activity android:name=".Activity.FriendWall" />
+        <activity android:name=".Activity.Search" />
+        <activity android:name=".Activity.RecentlySearch"></activity>
     </application>
 
 </manifest>

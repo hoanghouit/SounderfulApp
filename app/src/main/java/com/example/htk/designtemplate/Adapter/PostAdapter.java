@@ -99,7 +99,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         userName.setText(post.getUserName());
 
         // Set avater image
-        String url=post.getUrlAvatar();
+        String url="";
         Glide.with(context).load(url).apply(RequestOptions.circleCropTransform().placeholder(R.mipmap.ic_launcher_round)).into(avatar);
 
         //Set track image

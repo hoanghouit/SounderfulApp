@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private ImageView privacyWallImageIcon;
     private Context context;
+    private ImageView searchImageIcon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // set intent to search activity
+        searchImageIcon = (ImageView) findViewById(R.id.searchImageIcon);
+        searchImageIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, Search.class);
+                startActivity(intent);
+            }
+        });
+
         // set sample current user
         SharedPreferences sharedPreferences= getSharedPreferences("user",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPreferences.edit();
@@ -62,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
         Post p = new Post();
         p.setTitle("Mashup Em gái mưa (Hương Tràm) - Từ hôm nay (Chi Pu)| Ghitar version");
-        p.setUrlAvatar(url1);
         p.setUrlImage(url_image);
         p.setUserName("hoanghtk3108");
         postArray.add(p);

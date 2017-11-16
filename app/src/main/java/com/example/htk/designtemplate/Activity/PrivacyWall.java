@@ -53,7 +53,6 @@ public class PrivacyWall extends AppCompatActivity {
         String url_image="https://images.vexels.com/media/users/6821/74972/raw/1054e351afe112bca797a70d67d93f9e-purple-daisies-blue-background.jpg";
         Post p = new Post();
         p.setTitle("Mashup Em gái mưa (Hương Tràm) - Từ hôm nay (Chi Pu)| Ghitar version");
-        p.setUrlAvatar(url1);
         p.setUrlImage(url_image);
         p.setUserName("hoanghtk3108");
         postArray.add(p);

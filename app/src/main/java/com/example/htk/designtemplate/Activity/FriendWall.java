@@ -75,7 +75,6 @@ public class FriendWall extends AppCompatActivity {
 
         Post p = new Post();
         p.setTitle("Mashup Em gái mưa (Hương Tràm) - Từ hôm nay (Chi Pu)| Ghitar version");
-        p.setUrlAvatar(url1);
         p.setUrlImage(url_image);
         p.setUserName("yudaidang");
         postArray.add(p);
