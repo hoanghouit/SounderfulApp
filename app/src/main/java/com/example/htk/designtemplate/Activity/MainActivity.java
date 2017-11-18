@@ -4,13 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.htk.designtemplate.Adapter.PostAdapter;
+import com.example.htk.designtemplate.BottomNavigationViewHelper;
 import com.example.htk.designtemplate.Model.Account;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
@@ -18,11 +22,12 @@ import com.example.htk.designtemplate.R;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private Context context = MainActivity.this;
+    private static final int ACTIVITY_NUM = 0;
     private ArrayList<Post> postArray= new ArrayList<Post>() ;
     private PostAdapter postArrayAdapter;
     private ListView listView;
     private ImageView privacyWallImageIcon;
-    private Context context;
     private ImageView searchImageIcon;
     private Toolbar myToolbar;
     private ImageView notificationImageIcon;
@@ -43,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         addPost();
 
         // set intent to privacy wall
-        context = getApplicationContext();
         privacyWallImageIcon = (ImageView) findViewById(R.id.privacyWallImageIcon);
         privacyWallImageIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +83,16 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("userName","hoanghtk3108");
         editor.commit();
 
+        setupBottomNavigationView();
+
     }
+    @Override
+    public void onPause(){
+        super.onPause();
+        //tắt hiệu ứng khi chuyển activity
+        overridePendingTransition(0, 0);
+    }
+
     public void addPost(){
         String url1="http://genknews.genkcdn.vn/2017/smile-emojis-icon-facebook-funny-emotion-women-s-premium-long-sleeve-t-shirt-1500882676711.jpg";
         String url_image="https://images.vexels.com/media/users/6821/74972/raw/1054e351afe112bca797a70d67d93f9e-purple-daisies-blue-background.jpg";
@@ -110,4 +123,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
+    private void setupBottomNavigationView(){
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        BottomNavigationViewHelper.enableNavigation(context, bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
+    }
+
 }
