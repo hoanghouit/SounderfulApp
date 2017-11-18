@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/backGroundImage_friendwall"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="@dimen/background_height_wall"
             android:adjustViewBounds="true"
             android:scaleType="fitStart"
             android:background="@color/colorLittleGray" />
@@ -41,21 +41,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="110dp"
-                android:layout_gravity="bottom">
-                <ImageView
+            <ImageView
                     android:id="@+id/avatarImage_friendwall"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="@dimen/avatar_edge_wall"
+                    android:layout_height="@dimen/avatar_edge_wall"
+                    android:layout_gravity="bottom"
                     android:layout_marginLeft="20dp"
                     android:elevation="3dp"
                     android:src="@mipmap/ic_launcher_round" />
-            </LinearLayout>
             <LinearLayout
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_gravity="bottom"

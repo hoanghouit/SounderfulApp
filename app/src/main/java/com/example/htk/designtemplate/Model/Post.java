@@ -7,13 +7,12 @@ package com.example.htk.designtemplate.Model;
 public class Post {
     private int postId;
     private String title;
-    private String userName;
+    private Account account;
     private String dateTime;
     private String urlImage;
     private String urlTrack;
     private String description;
-    private String listenNumber;
-
+    private int listenNumber;
 
     public int getPostId() {
         return postId;
@@ -31,12 +30,12 @@ public class Post {
         this.title = title;
     }
 
-    public String getUserName() {
-        return userName;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public String getDateTime() {
@@ -71,11 +70,11 @@ public class Post {
         this.description = description;
     }
 
-    public String getListenNumber() {
+    public int getListenNumber() {
         return listenNumber;
     }
 
-    public void setListenNumber(String listenNumber) {
+    public void setListenNumber(int listenNumber) {
         this.listenNumber = listenNumber;
     }
 }

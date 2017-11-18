@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.htk.designtemplate.Activity.FriendWall">
+    tools:context="com.example.htk.designtemplate.Activity.FriendWallActivity">
     <ListView
         android:id="@+id/ListViewPost_friendWall"
         android:layout_width="match_parent"

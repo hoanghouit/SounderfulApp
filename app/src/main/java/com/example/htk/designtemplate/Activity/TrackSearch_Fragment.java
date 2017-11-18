@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.htk.designtemplate.Adapter.TrackSearchAdapter;
+import com.example.htk.designtemplate.Model.Account;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
 
@@ -52,19 +53,19 @@ public class TrackSearch_Fragment extends Fragment {
         Post p = new Post();
         p.setTitle("Mashup Em gái mưa (Hương Tràm) - Từ hôm nay (Chi Pu)| Ghitar version");
         p.setUrlImage(url_image);
-        p.setUserName("hoanghtk3108");
+        Account a=new Account();
+        a.setUserName("yudaidang");
+        p.setAccount(a);
         postArrayList.add(p);
 
         Post pi = new Post();
-        pi.setTitle("em gái mưa");
-        p.setUrlImage(url);
-        pi.setUserName("yudaidang");
+        pi.setTitle("em gái mưa");;
+        pi.setAccount(a);
         postArrayList.add(pi);
 
         Post pio = new Post();
         pio.setTitle("Ngày em đến");
-        p.setUrlImage(url_image);
-        pio.setUserName("hoanghtk3108");
+        pio.setAccount(a);
         postArrayList.add(pio);
 
     }

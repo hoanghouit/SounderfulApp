@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content"
+    android:paddingRight="@dimen/small_margin"
+    android:paddingLeft="@dimen/small_margin"
+    android:paddingTop="@dimen/extra_small_margin"
+    android:paddingBottom="@dimen/extra_small_margin"
+    android:background="@color/colorWhite">
+    <ImageView
+        android:id="@+id/avatarImage_commentActivity"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:layout_gravity="top"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/small_margin"
+        android:layout_gravity="center_vertical">
+        <TextView
+            android:id="@+id/commentTextView_commentActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="hoanghtkcutebaby ...  Bài hát hay lắm. Mình rất thích."
+            android:textColor="@color/colorDark"
+            android:textSize="15dp"
+            android:gravity="center_vertical"
+            android:maxLines="5"
+            android:ellipsize="end"/>
+        <TextView
+            android:gravity="right"
+            android:id="@+id/timeTextView_commentActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:text="10:12 12/12/2016"
+            android:maxLines="1"
+            android:ellipsize="end"/>
+
+    </LinearLayout>
+
+</LinearLayout>

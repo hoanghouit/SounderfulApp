@@ -19,12 +19,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity.PrivacyWall"
+            android:name=".Activity.PrivacyWallActivity"
             android:label="@string/title_activity_privacy_wall"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Activity.FriendWall" />
-        <activity android:name=".Activity.Search" />
-        <activity android:name=".Activity.RecentlySearch"></activity>
+        <activity android:name=".Activity.FriendWallActivity" />
+        <activity android:name=".Activity.SearchActivity" />
+        <activity android:name=".Activity.RecentlySearch" />
+        <activity android:name=".Activity.NotificationActivity" />
+        <activity android:name=".Activity.CommentActivity"></activity>
     </application>
 
 </manifest>

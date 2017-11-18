@@ -11,13 +11,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.htk.designtemplate.Activity.FriendWall;
-import com.example.htk.designtemplate.Activity.PrivacyWall;
+import com.example.htk.designtemplate.Activity.CommentActivity;
+import com.example.htk.designtemplate.Activity.FriendWallActivity;
+import com.example.htk.designtemplate.Activity.PrivacyWallActivity;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
 
@@ -62,7 +64,11 @@ public class PostAdapter extends ArrayAdapter<Post> {
         ImageView avatar = (ImageView) convertView.findViewById(R.id.avatarImageView);
         ImageView imageTrack = (ImageView) convertView.findViewById(R.id.imageView);
         final ImageView menu = (ImageView) convertView.findViewById(R.id.menuImage);
+        ImageView commentIcon = (ImageView) convertView.findViewById(R.id.commentIconImage);
+        SeekBar seekBar = (SeekBar) convertView.findViewById(R.id.trackTimeSeekBar);
 
+        // set seek bar width full parent
+        seekBar.setPadding(0,0,0,0);
 
         // set action for clicking avatar
         avatar.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +91,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
             @Override
             public void onClick(View view) {
                 // if this is post of current user
-                if(post.getUserName().equals(currentUser)) {
+                if(post.getAccount().getUserName().equals(currentUser)) {
                     showMenu(menu);
                 }
                 // if this is not post of current user, do nothing
@@ -96,7 +102,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         title.setText(post.getTitle());
 
         // Set username
-        userName.setText(post.getUserName());
+        userName.setText(post.getAccount().getUserName());
 
         // Set avater image
         String url="";
@@ -106,6 +112,14 @@ public class PostAdapter extends ArrayAdapter<Post> {
         String url_image=post.getUrlImage();
         Glide.with(context).load(url_image).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)).into(imageTrack);
 
+        // set action for clicking comment icon
+        commentIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, CommentActivity.class);
+                context.startActivity(intent);
+            }
+        });
         // Set other attribute of post ...
 
 
@@ -133,13 +147,13 @@ public class PostAdapter extends ArrayAdapter<Post> {
     }
     public void visitWall(Post post){
         Intent intent;
-        if(post.getUserName().equals(currentUser)){
+        if(post.getAccount().getUserName().equals(currentUser)){
             // if avatar clicked isn current user, start privacy wall activity ...
-            intent = new Intent(context, PrivacyWall.class);
+            intent = new Intent(context, PrivacyWallActivity.class);
         }
         else{
             // if avatar clicked isn't current user, start friend wall activity
-            intent = new Intent(context, FriendWall.class);
+            intent = new Intent(context, FriendWallActivity.class);
         }
         context.startActivity(intent);
     }

@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.htk.designtemplate.Activity.Search">
+    tools:context="com.example.htk.designtemplate.Activity.SearchActivity">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_searchActivity"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="@dimen/actionbar_height"
         android:background="@color/colorWhite"
         android:elevation="3dp"
         android:paddingRight="@dimen/small_margin"
@@ -38,7 +38,10 @@
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/colorDark"
                     android:hint="Tìm kiếm"
-                    android:textSize="20dp">
+                    android:textSize="20dp"
+                    android:inputType="text"
+                    android:backgroundTint="@android:color/transparent"
+                    android:imeOptions="actionSearch">
                 </EditText>
                 <ImageView
                     android:id="@+id/clearImageIcon_searchActivity"
@@ -47,11 +50,7 @@
                     android:src="@drawable/ic_close"
                     android:layout_gravity="end|center_vertical"
                     android:visibility="gone"/>
-
             </FrameLayout>
-
-
-
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
@@ -61,6 +60,7 @@
         android:layout_height="wrap_content"
         app:tabMode="fixed"
         app:tabGravity="fill"
+        app:tabIndicatorColor="@color/colorDark"
         android:background="@color/colorWhite"/>
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager_searchActivity"

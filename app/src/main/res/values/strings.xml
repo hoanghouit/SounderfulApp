@@ -7,4 +7,6 @@
     <string name="following_eng">follow</string>
     <string name="follower_eng">follower</string>
     <string name="edit_privacy_wall">chỉnh sửa trang cá nhân</string>
+    <string name="account">Tài khoản</string>
+    <string name="track">Bài hát</string>
 </resources>

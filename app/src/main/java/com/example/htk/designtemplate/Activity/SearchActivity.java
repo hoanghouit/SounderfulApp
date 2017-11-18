@@ -1,5 +1,6 @@
 package com.example.htk.designtemplate.Activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -8,7 +9,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,13 +20,14 @@ import com.example.htk.designtemplate.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Search extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ImageView backImage;
     private EditText searchEditText;
     private ImageView clearIcon;
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,25 +53,34 @@ public class Search extends AppCompatActivity {
         // set action display/ hide clear icon on search edit text
         searchEditText = (EditText) findViewById(R.id.searchEditText_searchActivity);
         clearIcon = (ImageView) findViewById(R.id.clearImageIcon_searchActivity);
-        searchEditText.setOnKeyListener(new View.OnKeyListener() {
+        context= getApplicationContext();
+        searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                int lengthText = searchEditText.getText().length();
-                if(lengthText > 0)
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String  lengthText = searchEditText.getText().toString();
+                if(lengthText.length()>0)
                 {
                     clearIcon.setVisibility(View.VISIBLE);
                 }
-                else
+                else{
                     clearIcon.setVisibility(View.GONE);
-                return false;
+                }
             }
         });
 
     }
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new AccountSearch_Fragment(), "Mọi người");
-        adapter.addFragment(new TrackSearch_Fragment(), "Hàng đầu");
+        adapter.addFragment(new AccountSearch_Fragment(), getResources().getString(R.string.account));
+        adapter.addFragment(new TrackSearch_Fragment(), getResources().getString(R.string.track));
         viewPager.setAdapter(adapter);
     }
 

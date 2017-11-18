@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context="com.example.htk.designtemplate.Activity.CommentActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_commentActivity"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionbar_height"
+        android:background="@color/colorWhite"
+        android:elevation="3dp"
+        android:paddingRight="@dimen/small_margin">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/backImage_commentActivity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorDark"
+                android:paddingLeft="@dimen/small_margin"
+                android:text="Bình luận"
+                android:textSize="18dp" />
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+    <ListView
+        android:id="@+id/listView_commentActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/myComment_commentActivity"
+        android:layout_below="@+id/toolbar_commentActivity">
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/myComment_commentActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="@dimen/small_margin">
+        <EditText
+            android:id="@+id/commentEditText_commentActivity"
+            android:hint="Nhập bình luận của bạn ..."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/extra_small_margin"
+            android:backgroundTint="@android:color/transparent"
+            android:maxLines="5" />
+        <LinearLayout
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorBlue"
+            android:gravity="center_horizontal|center_vertical">
+            <ImageView
+                android:id="@+id/sendIcon_commentActivity"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_send_light" />
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

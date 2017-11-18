@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.htk.designtemplate.Activity.FriendWall;
+import com.example.htk.designtemplate.Activity.FriendWallActivity;
 import com.example.htk.designtemplate.Model.Account;
 import com.example.htk.designtemplate.R;
 
@@ -57,7 +57,7 @@ public class AccountSearchAdapter extends ArrayAdapter<Account> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, FriendWall.class);
+                Intent intent = new Intent(context, FriendWallActivity.class);
                 context.startActivity(intent);
             }
         });

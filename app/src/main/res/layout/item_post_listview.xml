@@ -12,7 +12,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/colorWhite"
-        android:padding="@dimen/small_margin">
+        android:paddingTop="@dimen/small_margin"
+        android:paddingRight="@dimen/small_margin"
+        android:paddingLeft="@dimen/small_margin"
+        android:paddingBottom="@dimen/extra_small_margin">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="62dp"
@@ -117,23 +120,27 @@
         <TextView
             android:id="@+id/totalTrackTimeTextView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="@dimen/medium_margin"
+            android:paddingLeft="@dimen/extra_small_margin"
+            android:paddingRight="@dimen/extra_small_margin"
+            android:layout_height="20dp"
+            android:gravity="center_vertical"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="@dimen/large_margin"
+            android:layout_marginRight="40dp"
+            android:background="@color/colorLittleGray"
+            android:text="13:08"
+            android:alpha="0.5"
+            android:textColor="@color/colorDark" />
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_full_screen"
+            android:background="@color/colorLittleGray"
+            android:layout_gravity="bottom|end"
+            android:alpha="0.3"
+            android:layout_marginBottom="@dimen/large_margin"
             android:layout_marginRight="@dimen/extra_small_margin"
-            android:background="@color/colorGray"
-            android:text="3:08"
-            android:textColor="@color/colorWhite" />
-
-        <ProgressBar
-            android:id="@+id/trackTimeProgressBar"
-            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|clip_horizontal"
-            android:max="10"
-            android:progress="6" />
-
+            />
 
         <ImageView
             android:id="@+id/playTrackIconImage"
@@ -141,6 +148,16 @@
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_play_track" />
+
+        <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/trackTimeSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|clip_horizontal"
+            android:max="10"
+            android:progress="6"
+            android:progressTint="@color/colorBlue"
+            android:thumbTint="@color/colorBlue" />
     </FrameLayout>
 
 
@@ -162,11 +179,11 @@
         android:background="@color/colorLittleGray" />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="25dp"
         android:orientation="horizontal">
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
             android:layout_weight="1"
             android:gravity="center">
 
@@ -186,7 +203,7 @@
                 android:textColor="@color/colorDark" />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center">
@@ -207,7 +224,7 @@
                 android:textColor="@color/colorDark" />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center">
@@ -230,7 +247,7 @@
     </LinearLayout>
 </LinearLayout>
 <View
-android:layout_width="match_parent"
-android:layout_height="5dp"
-android:background="@color/colorLittleGray" />
+    android:layout_width="match_parent"
+    android:layout_height="5dp"
+    android:background="@color/colorLittleGray" />
 </LinearLayout>

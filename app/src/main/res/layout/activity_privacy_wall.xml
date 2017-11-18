@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.htk.designtemplate.Activity.PrivacyWall">
+    tools:context="com.example.htk.designtemplate.Activity.PrivacyWallActivity">
 
     <ListView
         android:id="@+id/ListViewPost"

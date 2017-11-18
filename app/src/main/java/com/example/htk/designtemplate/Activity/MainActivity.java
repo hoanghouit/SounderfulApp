@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.htk.designtemplate.Adapter.PostAdapter;
+import com.example.htk.designtemplate.Model.Account;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
 
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView privacyWallImageIcon;
     private Context context;
     private ImageView searchImageIcon;
+    private Toolbar myToolbar;
+    private ImageView notificationImageIcon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         privacyWallImageIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, PrivacyWall.class);
+                Intent intent = new Intent(context, PrivacyWallActivity.class);
                 startActivity(intent);
             }
         });
@@ -55,7 +58,17 @@ public class MainActivity extends AppCompatActivity {
         searchImageIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, Search.class);
+                Intent intent = new Intent(context, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // set intent to search activity
+        notificationImageIcon = (ImageView) findViewById(R.id.notificationImageIcon);
+        notificationImageIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, NotificationActivity.class);
                 startActivity(intent);
             }
         });
@@ -74,22 +87,26 @@ public class MainActivity extends AppCompatActivity {
         Post p = new Post();
         p.setTitle("Mashup Em gái mưa (Hương Tràm) - Từ hôm nay (Chi Pu)| Ghitar version");
         p.setUrlImage(url_image);
-        p.setUserName("hoanghtk3108");
+        Account a=new Account();
+        a.setUserName("hoanghtk3108");
+        p.setAccount(a);
         postArray.add(p);
 
         Post pi = new Post();
         pi.setTitle("em gái mưa");
-        pi.setUserName("yudaidang");
+        Account ai=new Account();
+        ai.setUserName("yudaidang");
+        pi.setAccount(ai);
         postArray.add(pi);
 
         Post pio = new Post();
         pio.setTitle("Ngày em đến");
-        pio.setUserName("hoanghtk3108");
+        pio.setAccount(a);
         postArray.add(pio);
     }
 
     public void setActionBar(){
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }

@@ -43,7 +43,7 @@ public class TrackSearchAdapter extends ArrayAdapter<Post> {
 
 
         // Set username
-        userName.setText(post.getUserName());
+        userName.setText(post.getAccount().getUserName());
         // Set biography
         title.setText(post.getTitle());
 
