@@ -1,6 +1,7 @@
 package com.example.htk.designtemplate.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import com.example.htk.designtemplate.Adapter.PostAdapter;
 import com.example.htk.designtemplate.Model.Account;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
+import com.example.htk.designtemplate.Utils.BottomNavigationViewHelper;
 
 import java.util.ArrayList;
 
@@ -69,6 +71,10 @@ public class FriendWallActivity extends AppCompatActivity {
             }
         });
 
+        //setupBottomNavigationView
+        Intent intent = getIntent();
+        int ACTIVITY_NUM = intent.getIntExtra("indexActivity",1);
+        BottomNavigationViewHelper.setupBottomNavigationView(this,ACTIVITY_NUM);
     }
     public void addPost(){
         String url1="http://genknews.genkcdn.vn/2017/smile-emojis-icon-facebook-funny-emotion-women-s-premium-long-sleeve-t-shirt-1500882676711.jpg";

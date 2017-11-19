@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.htk.designtemplate.R;
+import com.example.htk.designtemplate.Utils.BottomNavigationViewHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class SearchActivity extends AppCompatActivity {
     private EditText searchEditText;
     private ImageView clearIcon;
     private Context context;
+    private static final int ACTIVITY_NUM = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +77,14 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         });
-
+        //setupBottomNavigationView
+        BottomNavigationViewHelper.setupBottomNavigationView(this,ACTIVITY_NUM);
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+        //tắt hiệu ứng khi chuyển activity
+        overridePendingTransition(0, 0);
     }
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());

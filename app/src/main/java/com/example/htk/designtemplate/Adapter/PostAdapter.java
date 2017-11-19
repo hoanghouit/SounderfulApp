@@ -19,7 +19,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.htk.designtemplate.Activity.CommentActivity;
 import com.example.htk.designtemplate.Activity.FriendWallActivity;
+import com.example.htk.designtemplate.Activity.MainActivity;
+import com.example.htk.designtemplate.Activity.NotificationActivity;
 import com.example.htk.designtemplate.Activity.PrivacyWallActivity;
+import com.example.htk.designtemplate.Activity.SearchActivity;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
 
@@ -154,6 +157,20 @@ public class PostAdapter extends ArrayAdapter<Post> {
         else{
             // if avatar clicked isn't current user, start friend wall activity
             intent = new Intent(context, FriendWallActivity.class);
+            int indexActivity = -1;
+            if(context.getClass()== MainActivity.class){
+                indexActivity = 0;
+            }
+            if(context.getClass()== SearchActivity.class){
+                indexActivity = 1;
+            }
+            if(context.getClass()== NotificationActivity.class){
+                indexActivity = 3;
+            }
+            if(context.getClass()== PrivacyWallActivity.class){
+                indexActivity = 4;
+            }
+            intent.putExtra("indexActivity", indexActivity);
         }
         context.startActivity(intent);
     }

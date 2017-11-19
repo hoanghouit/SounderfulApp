@@ -11,14 +11,14 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp">
+        android:layout_height="230dp">
 
         <ImageView
             android:id="@+id/backGroundImage"
             android:layout_width="match_parent"
             android:layout_height="@dimen/background_height_wall"
             android:adjustViewBounds="true"
-            android:scaleType="fitStart"
+            android:scaleType="matrix"
             android:background="@color/colorLittleGray" />
         <ImageView
             android:id="@+id/backImage"
@@ -46,9 +46,12 @@
                     android:layout_width="@dimen/avatar_edge_wall"
                     android:layout_height="@dimen/avatar_edge_wall"
                     android:layout_gravity="bottom"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
                     android:layout_marginLeft="20dp"
-                    android:elevation="3dp"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:padding="@dimen/extra_small_margin"
+                    android:src="@mipmap/ic_launcher_round"
+                    android:background="@drawable/white_background"/>
             <LinearLayout
                 android:layout_weight="1"
                 android:layout_width="0dp"

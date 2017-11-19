@@ -1,16 +1,14 @@
 package com.example.htk.designtemplate.Activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.htk.designtemplate.Adapter.PostAdapter;
+import com.example.htk.designtemplate.Utils.BottomNavigationViewHelper;
 import com.example.htk.designtemplate.Model.Account;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
@@ -18,14 +16,13 @@ import com.example.htk.designtemplate.R;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
+    private Context context = MainActivity.this;
+    private static final int ACTIVITY_NUM = 0;
     private ArrayList<Post> postArray= new ArrayList<Post>() ;
     private PostAdapter postArrayAdapter;
     private ListView listView;
-    private ImageView privacyWallImageIcon;
-    private Context context;
-    private ImageView searchImageIcon;
     private Toolbar myToolbar;
-    private ImageView notificationImageIcon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,42 +39,14 @@ public class MainActivity extends AppCompatActivity {
         // add post for newsfeed
         addPost();
 
-        // set intent to privacy wall
-        context = getApplicationContext();
-        privacyWallImageIcon = (ImageView) findViewById(R.id.privacyWallImageIcon);
-        privacyWallImageIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, PrivacyWallActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // set intent to search activity
-        searchImageIcon = (ImageView) findViewById(R.id.searchImageIcon);
-        searchImageIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, SearchActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // set intent to search activity
-        notificationImageIcon = (ImageView) findViewById(R.id.notificationImageIcon);
-        notificationImageIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, NotificationActivity.class);
-                startActivity(intent);
-            }
-        });
-
         // set sample current user
         SharedPreferences sharedPreferences= getSharedPreferences("user",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.putString("userName","hoanghtk3108");
         editor.commit();
+
+        //setupBottomNavigationView
+        BottomNavigationViewHelper.setupBottomNavigationView(this,ACTIVITY_NUM);
 
     }
     public void addPost(){
@@ -110,4 +79,12 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
+    @Override
+    public void onPause(){
+        super.onPause();
+        //tắt hiệu ứng khi chuyển activity
+        overridePendingTransition(0, 0);
+    }
+
+
 }
