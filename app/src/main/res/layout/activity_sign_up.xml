@@ -1,9 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.htk.designtemplate.Activity.SignUpActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="10"
+            android:fontFamily="cursive"
+            android:text="Sounderful"
+            android:textAlignment="center"
+            android:textColor="@color/colorDark"
+            android:textStyle="bold"
+            android:textSize="40dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:orientation="vertical"
+        android:layout_weight="3">
 
-</android.support.constraint.ConstraintLayout>
+        <EditText
+            android:id="@+id/userName_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tên đăng nhập"
+            android:paddingBottom="@dimen/large_margin"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/password_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mật khẩu"
+            android:inputType="textPassword"
+            android:paddingBottom="@dimen/large_margin"
+            android:textSize="16sp" />
+        <EditText
+            android:id="@+id/passwordAgain_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Xác nhận mật khẩu"
+            android:inputType="textPassword"
+            android:paddingBottom="@dimen/large_margin"
+            android:textSize="16sp" />
+        <Button
+            android:id="@+id/signUpButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ĐĂNG NHẬP"
+            android:background="@color/colorBlue"
+            android:textColor="@color/colorWhite"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"></LinearLayout>
+
+</LinearLayout>

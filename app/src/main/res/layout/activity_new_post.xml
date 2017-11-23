@@ -1,9 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.htk.designtemplate.Activity.NewPostActivity">
+    <android.support.v7.widget.Toolbar
+        app:contentInsetStart="0dp"
+        app:contentInsetLeft="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorWhite"
+        android:elevation="3dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/backButton_NewPostActivity"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:src="@drawable/ic_back"
+                android:layout_alignParentLeft="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Đăng bài hát mới"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorDark"
+                android:textSize="18dp"
+                android:layout_toRightOf="@id/backButton_NewPostActivity"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:text="Đăng"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/transparent"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+            <ImageView
+                android:id="@+id/avatarImage_commentActivity"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:src="@mipmap/ic_launcher_round"
+                android:layout_gravity="top"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/small_margin"
+                android:layout_gravity="center_vertical">
 
-</android.support.constraint.ConstraintLayout>
+                <TextView
+                    android:id="@+id/commentTextView_commentActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="5"
+                    android:text="Hoàng Bánh Bèo Nhèo"
+                    android:textColor="@color/colorDark"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:gravity="left"
+                    android:id="@+id/timeTextView_commentActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:text="10:12 12/12/2016"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tiêu đề ..."
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:singleLine="true"
+                android:textSize="18sp"
+                android:textStyle="normal" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nội dung ..."
+                android:inputType="textMultiLine"
+                android:selectAllOnFocus="false"
+                android:singleLine="false"
+                android:textSize="18sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_micro_red"
+                    android:gravity="center_vertical"
+                    android:text="Ghi âm"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textAllCaps="false"
+                    android:textStyle="normal"
+                    android:textSize="16sp"
+                    />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_upload_blue"
+                    android:gravity="center_vertical"
+                    android:text="Tải lên tệp âm thanh"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textAllCaps="false"
+                    android:textStyle="normal"
+                    android:textSize="16sp"
+                    />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_image_green"
+                    android:gravity="center_vertical"
+                    android:text="Thêm hình ảnh"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textAllCaps="false"
+                    android:textStyle="normal"
+                    android:textSize="16sp"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>
