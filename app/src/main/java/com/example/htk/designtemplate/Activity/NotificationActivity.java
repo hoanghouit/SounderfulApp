@@ -13,6 +13,7 @@ import com.example.htk.designtemplate.Model.Account;
 import com.example.htk.designtemplate.Model.Notification;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
+import com.example.htk.designtemplate.Utils.BottomNavigationViewHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,6 +26,7 @@ public class NotificationActivity extends AppCompatActivity {
     private Context context;
     private Toolbar myToolbar;
     private ImageView backImage;
+    private static final int ACTIVITY_NUM = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +50,23 @@ public class NotificationActivity extends AppCompatActivity {
             }
         });
 
+        //setupBottomNavigationView
+        BottomNavigationViewHelper.setupBottomNavigationView(this,ACTIVITY_NUM);
+
     }
     public void setActionBar(){
         myToolbar = (Toolbar) findViewById(R.id.toolbar_notificationActivity);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        //tắt hiệu ứng khi chuyển activity
+        overridePendingTransition(0, 0);
+    }
+
     public void addSampleData(){
         String url="http://genknews.genkcdn.vn/2017/smile-emojis-icon-facebook-funny-emotion-women-s-premium-long-sleeve-t-shirt-1500882676711.jpg";
         String url_image="https://images.vexels.com/media/users/6821/74972/raw/1054e351afe112bca797a70d67d93f9e-purple-daisies-blue-background.jpg";
