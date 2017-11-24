@@ -132,7 +132,8 @@
             android:alpha="0.5"
             android:textColor="@color/colorDark" />
         <ImageView
-            android:layout_width="30dp"
+            android:id="@+id/playMusic"
+            android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:src="@drawable/ic_full_screen"
             android:background="@color/colorLittleGray"

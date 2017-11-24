@@ -82,6 +82,7 @@ public class MusicPlayer extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+                mediaPlayer.stop();
             }
         });
     }
