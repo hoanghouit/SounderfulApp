@@ -12,11 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/noActionBar">
         <activity android:name=".Activity.MainActivity">
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".Activity.PrivacyWallActivity"
@@ -26,7 +29,16 @@
         <activity android:name=".Activity.SearchActivity" />
         <activity android:name=".Activity.RecentlySearch" />
         <activity android:name=".Activity.NotificationActivity" />
-        <activity android:name=".Activity.CommentActivity"></activity>
+        <activity android:name=".Activity.CommentActivity" />
+        <activity android:name=".Activity.LoginActivity" />
+        <activity android:name=".Activity.SignUpActivity" />
+        <activity android:name=".Activity.NewPostActivity">
+          <!--  <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
     </application>
 
 </manifest>
