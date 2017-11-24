@@ -49,9 +49,9 @@
                     android:layout_marginLeft="20dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
-                    android:background="@drawable/white_background"
+                    android:background="@drawable/circle_white_background"
                     android:padding="@dimen/extra_small_margin"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:src="@drawable/circle_gray_background" />
             <LinearLayout
                 android:layout_weight="1"
                 android:layout_width="0dp"

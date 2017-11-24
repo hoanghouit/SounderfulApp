@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.htk.designtemplate.Activity.CommentActivity;
 import com.example.htk.designtemplate.Activity.FriendWallActivity;
@@ -27,7 +28,9 @@ import com.example.htk.designtemplate.Activity.SearchActivity;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by HTK on 11/12/2017.
@@ -61,7 +64,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         TextView title = (TextView) convertView.findViewById(R.id.titleTextView);
         TextView userName = (TextView) convertView.findViewById(R.id.usernameTextView);
         TextView dateTime = (TextView) convertView.findViewById(R.id.timeTextView);
-        TextView description = (TextView) convertView.findViewById(R.id.descriptionTextView);
+        final TextView description = (TextView) convertView.findViewById(R.id.descriptionTextView);
         TextView likeNumber = (TextView) convertView.findViewById(R.id.likeNumberTextView);
         TextView commentNumber = (TextView) convertView.findViewById(R.id.commentNumberTextView);
         TextView listenNumber = (TextView) convertView.findViewById(R.id.listenNumberTextView);
@@ -70,7 +73,9 @@ public class PostAdapter extends ArrayAdapter<Post> {
         ImageView playMusic = (ImageView) convertView.findViewById(R.id.playMusic);
         final ImageView menu = (ImageView) convertView.findViewById(R.id.menuImage);
         ImageView commentIcon = (ImageView) convertView.findViewById(R.id.commentIconImage);
+        final ImageView likeIcon = (ImageView) convertView.findViewById(R.id.likeIconImage);
         SeekBar seekBar = (SeekBar) convertView.findViewById(R.id.trackTimeSeekBar);
+        final TextView readMore = (TextView) convertView.findViewById(R.id.readMoreTextView);
 
         // set seek bar width full parent
         seekBar.setPadding(0,0,0,0);
@@ -116,13 +121,38 @@ public class PostAdapter extends ArrayAdapter<Post> {
         // Set username
         userName.setText(post.getAccount().getUserName());
 
-        // Set avater image
-        String url="";
-        Glide.with(context).load(url).apply(RequestOptions.circleCropTransform().placeholder(R.mipmap.ic_launcher_round)).into(avatar);
+        // Set avatar image
+        String url= post.getAccount().getUrlAvatar();
+        Glide.with(context).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(200,200).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
 
         //Set track image
         String url_image=post.getUrlImage();
-        Glide.with(context).load(url_image).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)).into(imageTrack);
+        Glide.with(context).load(url_image).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(800,400).error(R.color.colorLittleGray)).into(imageTrack);
+
+        // Set description
+        description.setText(post.getDescription());
+        // set readmore text view
+        if(description.getLineCount()>4){
+            readMore.setVisibility(View.VISIBLE);
+            description.setMaxLines(4);
+        }
+        else{
+            readMore.setVisibility(View.GONE);
+        }
+
+        // Set listen number
+       listenNumber.setText(getNumber(post.getListenNumber()));
+
+        // Set like number
+        likeNumber.setText(getNumber(post.getLikeNumber()));
+
+        // Set comment number
+        commentNumber.setText(getNumber(post.getCommentNumber()));
+
+        // set time
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+        dateTime.setText(simpleDateFormat.format(post.getDateTime()));
+
 
         // set action for clicking comment icon
         commentIcon.setOnClickListener(new View.OnClickListener() {
@@ -132,9 +162,17 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 context.startActivity(intent);
             }
         });
+
+        // set action for clicking readmore textview
+        readMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                readMore.setVisibility(View.GONE);
+                description.setMaxLines(1000);
+            }
+        });
+
         // Set other attribute of post ...
-
-
         return convertView;
     }
     public void showMenu (View view)
@@ -180,6 +218,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 indexActivity = 4;
             }
             intent.putExtra("indexActivity", indexActivity);
+            intent.putExtra("userName", post.getAccount().getUserName());
         }
         context.startActivity(intent);
     }
@@ -188,6 +227,30 @@ public class PostAdapter extends ArrayAdapter<Post> {
         Intent intent;
         intent = new Intent(context, MusicPlayer.class);
         context.startActivity(intent);
+    }
+
+    public String getNumber(int number){
+        int n;
+        if(number<99999){
+            return String.format(Locale.US,"%,d",number).replace(',','.');
+        }
+        else{
+            if(number<999999){
+                n = number/1000;
+                return Integer.toString(n).concat("K");
+            }
+            else{
+                if(number<999999999){
+                    n = number/1000000;
+                    return Integer.toString(n).concat("Tr");
+                }
+                else{
+                    n = number/1000000000;
+                    return Integer.toString(n).concat("T");
+                }
+            }
+        }
+
     }
 
 

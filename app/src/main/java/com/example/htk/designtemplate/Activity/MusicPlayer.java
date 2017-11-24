@@ -1,13 +1,9 @@
 package com.example.htk.designtemplate.Activity;
 
-import android.media.AudioManager;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
-import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -15,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
 
 import java.io.IOException;
@@ -88,7 +83,9 @@ public class MusicPlayer extends AppCompatActivity {
     }
 
     protected void createMediaPlayer(){
-        String url = "https://drive.google.com/uc?export=download&id=1jPBGvhgR7L0Ja9RoFvvHNPMjNeGDCy2k";
+
+        String url = "https://drive.google.com/uc?export=download&id=1KtxkUdHorVT5OkjlclrrKgrcLijfJfBW";
+        //String url = "https://drive.google.com/uc?export=download&id=1jPBGvhgR7L0Ja9RoFvvHNPMjNeGDCy2k";
         mediaPlayer = new MediaPlayer();
         try {
             mediaPlayer.setDataSource(url);

@@ -1,22 +1,34 @@
 package com.example.htk.designtemplate.Activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.htk.designtemplate.Adapter.PostAdapter;
+import com.example.htk.designtemplate.Service.AccountService;
+import com.example.htk.designtemplate.Service.ApiUtils;
+import com.example.htk.designtemplate.Service.PostService;
 import com.example.htk.designtemplate.Utils.BottomNavigationViewHelper;
 import com.example.htk.designtemplate.Model.Account;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PrivacyWallActivity extends AppCompatActivity {
     private static final int ACTIVITY_NUM = 4;
@@ -26,16 +38,26 @@ public class PrivacyWallActivity extends AppCompatActivity {
     private ImageView backImage;
     private ImageView avatarImage;
     private ImageView backgroundImage;
+    private AccountService accountService;
+    private String userName;
+    private PostService mService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_wall);
+        // set retrofit account service
+        accountService = ApiUtils.getAccountService();
+
+        // set user name
+        SharedPreferences sharedPreferences= getSharedPreferences("user",Context.MODE_PRIVATE);
+        userName = sharedPreferences.getString("userName","");
 
         // Inflat header (user information) to listview
         listView = (ListView) findViewById(R.id.ListViewPost);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View head= inflater.inflate(R.layout.header_privacy_wall,listView,false);
+        loadUserInfo();
         listView.addHeaderView(head);
 
          // set adapter for list view
@@ -43,7 +65,10 @@ public class PrivacyWallActivity extends AppCompatActivity {
         listView.setAdapter(postArrayAdapter);
 
         // add post for newsfeed
-        addPost();
+        //addPost();
+        // set retrofit service
+        mService = ApiUtils.getPostService();
+        loadPost();
 
         //set action for back button
         backImage = (ImageView) findViewById(R.id.backImage);
@@ -95,6 +120,68 @@ public class PrivacyWallActivity extends AppCompatActivity {
         pio.setAccount(ai);
         postArray.add(pio);
     }
+    public void loadUserInfo(){
+        accountService.getAccountDetail(userName).enqueue(new Callback<Account>() {
+            @Override
+            public void onResponse(Call<Account> call, Response<Account> response) {
 
+                if(response.isSuccessful()) {
+                    setUserInfo(response.body());
+                    Log.d("PrivacyWallActivity", "posts loaded from API");
+                }else {
+                    int statusCode  = response.code();
+                    Log.d("PrivacyWallActivity", "fail loaded from API");
+                    Log.d("PrivacyWallActivity", ((Integer)statusCode).toString());
+                    // handle request errors depending on status code
+                }
+            }
+            @Override
+            public void onFailure(Call<Account> call, Throwable t) {
+                Log.d("PrivacyWallActivity", t.getMessage());
+            }
+        });
+    }
+    public void setUserInfo(Account account){
+        TextView userName = (TextView) findViewById(R.id.usernameTextViewPrivacyWall);
+        TextView biography = (TextView) findViewById(R.id.biographyTextView);
+        ImageView avatar = (ImageView) findViewById(R.id.avatarImagePrivacyWall);
+        ImageView background = (ImageView) findViewById(R.id.backGroundImage);
+        TextView postNumber = (TextView) findViewById(R.id.postNumberTextView);
+        TextView follower = (TextView) findViewById(R.id.followerNumberTextView);
+        TextView following = (TextView) findViewById(R.id.followingNumberTextView);
+
+        userName.setText(account.getUserName());
+        biography.setText(account.getBiography());
+        // Set avatar image
+        String url= account.getUrlAvatar();
+        Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(500,500).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
+
+        String url_background= account.getUrlBackground();
+        Glide.with(this).load(url_background).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).centerCrop().error(R.color.colorLittleGray)).into(background);
+
+    }
+
+    public void loadPost(){
+        mService.getPostsWall(userName).enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+
+                if(response.isSuccessful()) {
+                    //itemArrayList = new ArrayList<Item>(response.body().getItems());
+                    postArrayAdapter.addAll(response.body());
+                    Log.d("MainActivity", "posts loaded from API");
+                }else {
+                    int statusCode  = response.code();
+                    Log.d("MainActivity", "fail loaded from API");
+                    Log.d("MainActivity", ((Integer)statusCode).toString());
+                    // handle request errors depending on status code
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+                Log.d("MainActivity", t.getMessage());
+            }
+        });
+    }
 
 }

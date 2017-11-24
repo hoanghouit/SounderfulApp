@@ -1,14 +1,31 @@
 package com.example.htk.designtemplate.Model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by HTK on 11/14/2017.
  */
 
 public class Account {
+    @SerializedName("userName")
+    @Expose
     private String userName;
+
+    @SerializedName("password")
+    @Expose
     private String passWord;
+
+    @SerializedName("biography")
+    @Expose
     private String biography;
+
+    @SerializedName("urlAvatar")
+    @Expose
     private String urlAvatar;
+
+    @SerializedName("urlBackgroundImage")
+    @Expose
     private String urlBackground;
 
     public String getUserName() {
