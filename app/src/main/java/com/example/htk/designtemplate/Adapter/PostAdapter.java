@@ -20,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.htk.designtemplate.Activity.CommentActivity;
 import com.example.htk.designtemplate.Activity.FriendWallActivity;
 import com.example.htk.designtemplate.Activity.MainActivity;
+import com.example.htk.designtemplate.Activity.MusicPlayer;
 import com.example.htk.designtemplate.Activity.NotificationActivity;
 import com.example.htk.designtemplate.Activity.PrivacyWallActivity;
 import com.example.htk.designtemplate.Activity.SearchActivity;
@@ -66,6 +67,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         TextView listenNumber = (TextView) convertView.findViewById(R.id.listenNumberTextView);
         ImageView avatar = (ImageView) convertView.findViewById(R.id.avatarImageView);
         ImageView imageTrack = (ImageView) convertView.findViewById(R.id.imageView);
+        ImageView playMusic = (ImageView) convertView.findViewById(R.id.playMusic);
         final ImageView menu = (ImageView) convertView.findViewById(R.id.menuImage);
         ImageView commentIcon = (ImageView) convertView.findViewById(R.id.commentIconImage);
         SeekBar seekBar = (SeekBar) convertView.findViewById(R.id.trackTimeSeekBar);
@@ -86,6 +88,13 @@ public class PostAdapter extends ArrayAdapter<Post> {
             @Override
             public void onClick(View view) {
                 visitWall(post);
+            }
+        });
+
+        playMusic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playMusic(post);
             }
         });
 
@@ -172,6 +181,12 @@ public class PostAdapter extends ArrayAdapter<Post> {
             }
             intent.putExtra("indexActivity", indexActivity);
         }
+        context.startActivity(intent);
+    }
+
+    public void playMusic(Post post){
+        Intent intent;
+        intent = new Intent(context, MusicPlayer.class);
         context.startActivity(intent);
     }
 
