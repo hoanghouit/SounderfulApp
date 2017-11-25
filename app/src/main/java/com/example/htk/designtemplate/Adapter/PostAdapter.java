@@ -187,6 +187,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
     public void playMusic(Post post){
         Intent intent;
         intent = new Intent(context, MusicPlayer.class);
+        intent.putExtra("titlePost", post.getTitle());
         context.startActivity(intent);
     }
 
