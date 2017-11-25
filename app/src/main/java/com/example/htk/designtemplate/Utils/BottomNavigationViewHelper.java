@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.htk.designtemplate.Activity.MainActivity;
+import com.example.htk.designtemplate.Activity.NewPostActivity;
 import com.example.htk.designtemplate.Activity.NotificationActivity;
 import com.example.htk.designtemplate.Activity.PrivacyWallActivity;
 import com.example.htk.designtemplate.Activity.SearchActivity;
@@ -66,6 +67,8 @@ public class BottomNavigationViewHelper {
                         context.startActivity(intent1);
                         break;
                     case R.id.ic_post:
+                        Intent intent2 = new Intent(context, NewPostActivity.class);
+                        context.startActivity(intent2);
                         break;
                     case R.id.ic_notification:
                         Intent intent3 = new Intent(context, NotificationActivity.class);

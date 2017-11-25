@@ -1,17 +1,53 @@
 package com.example.htk.designtemplate.Model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
+
 /**
  * Created by HTK on 11/12/2017.
  */
 
 public class Post {
+    @SerializedName("id")
+    @Expose
     private int postId;
+
+    @SerializedName("title")
+    @Expose
     private String title;
+
+    @SerializedName("userName")
+    @Expose
     private Account account;
-    private String dateTime;
+
+    @SerializedName("postTime")
+    @Expose
+    private Date dateTime;
+
+    @SerializedName("urlImage")
+    @Expose
     private String urlImage;
+
+    @SerializedName("urlTrack")
+    @Expose
     private String urlTrack;
+
+    @SerializedName("description")
+    @Expose
     private String description;
+
+    @SerializedName("num_of_like")
+    @Expose
+    private int likeNumber;
+
+    @SerializedName("num_of_comment")
+    @Expose
+    private int commentNumber;
+
+    @SerializedName("listenNumber")
+    @Expose
     private int listenNumber;
 
     public int getPostId() {
@@ -38,11 +74,11 @@ public class Post {
         this.account = account;
     }
 
-    public String getDateTime() {
+    public Date getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
+    public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -76,5 +112,21 @@ public class Post {
 
     public void setListenNumber(int listenNumber) {
         this.listenNumber = listenNumber;
+    }
+
+    public int getLikeNumber() {
+        return likeNumber;
+    }
+
+    public void setLikeNumber(int likeNumber) {
+        this.likeNumber = likeNumber;
+    }
+
+    public int getCommentNumber() {
+        return commentNumber;
+    }
+
+    public void setCommentNumber(int commentNumber) {
+        this.commentNumber = commentNumber;
     }
 }

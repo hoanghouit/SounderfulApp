@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SounderfulApp.iml" filepath="$PROJECT_DIR$/SounderfulApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DesignTemplate.iml" filepath="$PROJECT_DIR$/DesignTemplate.iml" />
+      <module fileurl="file://D:\Mobile\Android Project\DesignTemplate\SounderfulApp.iml" filepath="D:\Mobile\Android Project\DesignTemplate\SounderfulApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

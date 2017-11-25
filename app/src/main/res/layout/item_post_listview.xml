@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingTop="@dimen/extra_small_margin"
-                android:src="@mipmap/ic_launcher_round" />
+                android:src="@drawable/circle_gray_background" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -45,9 +45,9 @@
 
                     <TextView
                         android:id="@+id/titleTextView"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="8"
+                        android:layout_weight="1"
                         android:ellipsize="end"
                         android:gravity="bottom"
                         android:maxLines="2"
@@ -58,8 +58,7 @@
                         android:textSize="@dimen/medium_text" />
 
                     <ImageView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="20dp"
                         android:id="@+id/menuImage"
                         android:layout_height="match_parent"
                         android:src="@drawable/ic_menu" />
@@ -72,26 +71,24 @@
 
                     <TextView
                         android:id="@+id/usernameTextView"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="6"
+                        android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:paddingLeft="@dimen/small_margin"
-                        android:paddingRight="@dimen/extra_small_margin"
                         android:text="Hồ Thị Kim Hoàng"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/timeTextView"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="3"
                         android:gravity="center"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textAlignment="textEnd"
-                        android:paddingLeft="@dimen/small_margin"
+                        android:paddingLeft="@dimen/extra_small_margin"
                         android:paddingRight="@dimen/extra_small_margin"
                         android:text="2 phút trước"
                         android:textSize="@dimen/small_text" />
@@ -116,7 +113,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"
+            android:src="@color/colorLittleGray"/>
         <TextView
             android:id="@+id/totalTrackTimeTextView"
             android:layout_width="wrap_content"
@@ -148,7 +146,8 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_play_track" />
+            android:alpha="0.5"
+            android:src="@mipmap/ic_play_in_post" />
 
         <android.support.v7.widget.AppCompatSeekBar
             android:id="@+id/trackTimeSeekBar"
@@ -162,15 +161,18 @@
     </FrameLayout>
 
 
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:text="Bài hát này rất hay và ý nghĩa. Mọi người thưởng thức nhá. Chúc các bạn buổi tối tốt lành. Love u Moazh "
+            android:textColor="@color/colorDark" />
     <TextView
-        android:id="@+id/descriptionTextView"
-        android:layout_width="match_parent"
+        android:id="@+id/readMoreTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/small_margin"
-        android:ellipsize="end"
-        android:maxLines="4"
-        android:text="Bài hát này rất hay và ý nghĩa. Mọi người thưởng thức nhá. Chúc các bạn buổi tối tốt lành. Love u Moazh "
-        android:textColor="@color/colorDark" />
+        android:text="Xem thêm" />
 
     <View
         android:layout_width="match_parent"

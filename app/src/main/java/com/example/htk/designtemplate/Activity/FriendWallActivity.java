@@ -4,19 +4,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.htk.designtemplate.Adapter.PostAdapter;
 import com.example.htk.designtemplate.Model.Account;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
+import com.example.htk.designtemplate.Service.AccountService;
+import com.example.htk.designtemplate.Service.ApiUtils;
+import com.example.htk.designtemplate.Service.PostService;
 import com.example.htk.designtemplate.Utils.BottomNavigationViewHelper;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FriendWallActivity extends AppCompatActivity {
 
@@ -25,24 +38,41 @@ public class FriendWallActivity extends AppCompatActivity {
     private ListView listView;
     private ImageView backImage;
     private Button followButton;
-
+    private AccountService accountService;
+    private String userName;
+    private View header;
+    private Intent intent;
+    private PostService mService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_wall);
+        // set up intent
+        intent = getIntent();
+
+        //
+        userName = intent.getStringExtra("userName");
+        // set retrofit account service
+        accountService = ApiUtils.getAccountService();
 
         // Inflat header (user information) to listview
         listView = (ListView) findViewById(R.id.ListViewPost_friendWall);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View head= inflater.inflate(R.layout.header_friend_wall,listView,false);
-        listView.addHeaderView(head);
+        header= inflater.inflate(R.layout.header_friend_wall,listView,false);
+        loadUserInfo();
+        listView.addHeaderView(header);
 
         // set adapter for list view
         postArrayAdapter = new PostAdapter(this,R.layout.item_post_listview, postArray);
         listView.setAdapter(postArrayAdapter);
 
         // add post for newsfeed
-        addPost();
+       // addPost();
+
+        // set retrofit service
+        mService = ApiUtils.getPostService();
+        loadPost();
+
 
         //set action for back button
         backImage = (ImageView) findViewById(R.id.backImage_friendwall);
@@ -72,7 +102,6 @@ public class FriendWallActivity extends AppCompatActivity {
         });
 
         //setupBottomNavigationView
-        Intent intent = getIntent();
         int ACTIVITY_NUM = intent.getIntExtra("indexActivity",1);
         BottomNavigationViewHelper.setupBottomNavigationView(this,ACTIVITY_NUM);
     }
@@ -97,5 +126,70 @@ public class FriendWallActivity extends AppCompatActivity {
         pio.setTitle("Ngày em đến");
         pio.setAccount(a);
         postArray.add(pio);
+    }
+
+    public void loadUserInfo(){
+        accountService.getAccountDetail(userName).enqueue(new Callback<Account>() {
+            @Override
+            public void onResponse(Call<Account> call, Response<Account> response) {
+
+                if(response.isSuccessful()) {
+                    setUserInfo(response.body());
+                    Log.d("FriendWallActivity", "posts loaded from API");
+                }else {
+                    int statusCode  = response.code();
+                    Log.d("FriendWallActivity", "fail loaded from API");
+                    Log.d("FriendWallActivity", ((Integer)statusCode).toString());
+                    // handle request errors depending on status code
+                }
+            }
+            @Override
+            public void onFailure(Call<Account> call, Throwable t) {
+                Log.d("FriendWallActivity", t.getMessage());
+            }
+        });
+    }
+    public void setUserInfo(Account account){
+        TextView userName = (TextView) findViewById(R.id.usernameTextView_friendwall);
+        TextView biography = (TextView) findViewById(R.id.biographyTextView_friendwall);
+        ImageView avatar = (ImageView) findViewById(R.id.avatarImage_friendwall);
+        ImageView background = (ImageView) findViewById(R.id.backGroundImage_friendwall);
+        TextView postNumber = (TextView) findViewById(R.id.postNumberTextView_friendwall);
+        TextView follower = (TextView) findViewById(R.id.followerNumberTextView_friendwall);
+        TextView following = (TextView) findViewById(R.id.followingNumberTextView_friendwall);
+
+        userName.setText(account.getUserName());
+        biography.setText(account.getBiography());
+        // Set avatar image
+        String url= account.getUrlAvatar();
+        Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(500,500).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
+
+        String url_background= account.getUrlBackground();
+        Glide.with(this).load(url_background).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).error(R.color.colorLittleGray)).into(background);
+
+
+    }
+
+    public void loadPost(){
+        mService.getPostsWall(userName).enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+
+                if(response.isSuccessful()) {
+                    //itemArrayList = new ArrayList<Item>(response.body().getItems());
+                    postArrayAdapter.addAll(response.body());
+                    Log.d("MainActivity", "posts loaded from API");
+                }else {
+                    int statusCode  = response.code();
+                    Log.d("MainActivity", "fail loaded from API");
+                    Log.d("MainActivity", ((Integer)statusCode).toString());
+                    // handle request errors depending on status code
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+                Log.d("MainActivity", t.getMessage());
+            }
+        });
     }
 }
