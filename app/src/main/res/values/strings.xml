@@ -4,9 +4,21 @@
     <string name="following">đang theo dõi</string>
     <string name="follow">theo dõi</string>
     <string name="post">bài đăng</string>
-    <string name="following_eng">follow</string>
+    <string name="following_eng">following</string>
     <string name="follower_eng">follower</string>
     <string name="edit_privacy_wall">chỉnh sửa trang cá nhân</string>
     <string name="account">Tài khoản</string>
     <string name="track">Bài hát</string>
+    <string name="length_password_error">Password phải từ 6 ký tự trở lên</string>
+    <string name="invalid_username_error">Tên đăng nhập chỉ được bao gồm số và chữ</string>
+    <string name="available_username_error">Tên đăng nhập đã tồn tại</string>
+    <string name="confirm_password_error">Password không trùng khớp</string>
+    <string name="completed_signup_error">Vui lòng điền đầy đủ thông tin</string>
+    <string name="no_account_login">Bạn chưa có tài khoản?</string>
+    <string name="signup">Đăng ký</string>
+    <string name="successul_signup">Đăng ký tài khoản thành công</string>
+    <string name="fail_signup">Đăng ký tài khoản không thành công</string>
+    <string name="successul_login">Đăng nhập thành công</string>
+    <string name="incorrect_login">Tên đăng nhập hoặc mật khẩu không chính xác</string>
+    <string name="fail_login">Đăng nhập không thành công</string>
 </resources>

@@ -167,6 +167,9 @@ public class FriendWallActivity extends AppCompatActivity {
         String url_background= account.getUrlBackground();
         Glide.with(this).load(url_background).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).error(R.color.colorLittleGray)).into(background);
 
+        postNumber.setText(getNumber(account.getPostNumber()));
+        follower.setText(getNumber(account.getFollowerNumber()));
+        following.setText(getNumber(account.getFollowNumber()));
 
     }
 
@@ -178,18 +181,42 @@ public class FriendWallActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     //itemArrayList = new ArrayList<Item>(response.body().getItems());
                     postArrayAdapter.addAll(response.body());
-                    Log.d("MainActivity", "posts loaded from API");
+                    Log.d("FriendWallActivity", "posts loaded from API");
                 }else {
                     int statusCode  = response.code();
-                    Log.d("MainActivity", "fail loaded from API");
-                    Log.d("MainActivity", ((Integer)statusCode).toString());
+                    Log.d("FriendWallActivity", "fail loaded from API");
+                    Log.d("FriendWallActivity", ((Integer)statusCode).toString());
                     // handle request errors depending on status code
                 }
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("MainActivity", t.getMessage());
+                Log.d("FriendWallActivity", t.getMessage());
             }
         });
+    }
+
+    public String getNumber(int number){
+        int n;
+        if(number<999){
+            return Integer.toString(number);
+        }
+        else{
+            if(number<999999){
+                n = number/1000;
+                return Integer.toString(n).concat("K");
+            }
+            else{
+                if(number<999999999){
+                    n = number/1000000;
+                    return Integer.toString(n).concat("Tr");
+                }
+                else{
+                    n = number/1000000000;
+                    return Integer.toString(n).concat("T");
+                }
+            }
+        }
+
     }
 }

@@ -1,27 +1,31 @@
 package com.example.htk.designtemplate.Activity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.htk.designtemplate.Adapter.PostAdapter;
+import com.example.htk.designtemplate.Model.Account;
+import com.example.htk.designtemplate.Model.Post;
+import com.example.htk.designtemplate.R;
 import com.example.htk.designtemplate.Service.AccountService;
 import com.example.htk.designtemplate.Service.ApiUtils;
 import com.example.htk.designtemplate.Service.PostService;
 import com.example.htk.designtemplate.Utils.BottomNavigationViewHelper;
-import com.example.htk.designtemplate.Model.Account;
-import com.example.htk.designtemplate.Model.Post;
-import com.example.htk.designtemplate.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +40,18 @@ public class PrivacyWallActivity extends AppCompatActivity {
     private PostAdapter postArrayAdapter;
     private ListView listView;
     private ImageView backImage;
-    private ImageView avatarImage;
-    private ImageView backgroundImage;
+    private TextView userNameTextView;
+    private TextView biographyTextView;
+    private ImageView avatar;
+    private ImageView background;
+    private TextView postNumberTextView;
+    private TextView followerTextView;
+    private TextView followingTextView;
+    private ImageView menu;
     private AccountService accountService;
     private String userName;
     private PostService mService;
+    private Activity context =this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,17 +90,19 @@ public class PrivacyWallActivity extends AppCompatActivity {
             }
         });
 
+        //set menu
+        menu = (ImageView) findViewById(R.id.menuImage);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMenu(menu);
+            }
+        });
+
+
         //setupBottomNavigationView
         BottomNavigationViewHelper.setupBottomNavigationView(this,ACTIVITY_NUM);
 
-        // set sample avatar image
-        String url1="https://scontent.fsgn5-4.fna.fbcdn.net/v/t1.0-9/21687485_1133775720087600_8541101764693327944_n.jpg?oh=b0b927dee62f2cec22aeb14a687e6814&oe=5A9A38C1";
-        String url_image="https://scontent.fsgn5-4.fna.fbcdn.net/v/t1.0-9/18222582_887073868098395_7159416397014555794_n.jpg?oh=6d68e61d83b11b5f812e1533904d2f93&oe=5AAFE4A2";
-
-        avatarImage = (ImageView) findViewById(R.id.avatarImagePrivacyWall);
-        backgroundImage = (ImageView) findViewById(R.id.backGroundImage);
-        Glide.with(this).load(url1).apply(RequestOptions.circleCropTransform().placeholder(R.mipmap.ic_launcher_round)).into(avatarImage);
-        Glide.with(this).load(url_image).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)).into(backgroundImage);
     }
     @Override
     public void onPause(){
@@ -97,29 +110,7 @@ public class PrivacyWallActivity extends AppCompatActivity {
         //tắt hiệu ứng khi chuyển activity
         overridePendingTransition(0, 0);
     }
-    public void addPost(){
-        String url1="http://genknews.genkcdn.vn/2017/smile-emojis-icon-facebook-funny-emotion-women-s-premium-long-sleeve-t-shirt-1500882676711.jpg";
-        String url_image="https://images.vexels.com/media/users/6821/74972/raw/1054e351afe112bca797a70d67d93f9e-purple-daisies-blue-background.jpg";
-        Post p = new Post();
-        p.setTitle("Mashup Em gái mưa (Hương Tràm) - Từ hôm nay (Chi Pu)| Ghitar version");
-        p.setUrlImage(url_image);
-        Account a=new Account();
-        a.setUserName("hoanghtk3108");
-        p.setAccount(a);
-        postArray.add(p);
 
-        Post pi = new Post();
-        pi.setTitle("em gái mưa");
-        Account ai=new Account();
-        ai.setUserName("hoanghtk3108");
-        pi.setAccount(ai);
-        postArray.add(pi);
-
-        Post pio = new Post();
-        pio.setTitle("Ngày em đến");
-        pio.setAccount(ai);
-        postArray.add(pio);
-    }
     public void loadUserInfo(){
         accountService.getAccountDetail(userName).enqueue(new Callback<Account>() {
             @Override
@@ -142,16 +133,16 @@ public class PrivacyWallActivity extends AppCompatActivity {
         });
     }
     public void setUserInfo(Account account){
-        TextView userName = (TextView) findViewById(R.id.usernameTextViewPrivacyWall);
-        TextView biography = (TextView) findViewById(R.id.biographyTextView);
-        ImageView avatar = (ImageView) findViewById(R.id.avatarImagePrivacyWall);
-        ImageView background = (ImageView) findViewById(R.id.backGroundImage);
-        TextView postNumber = (TextView) findViewById(R.id.postNumberTextView);
-        TextView follower = (TextView) findViewById(R.id.followerNumberTextView);
-        TextView following = (TextView) findViewById(R.id.followingNumberTextView);
+        userNameTextView = (TextView) findViewById(R.id.usernameTextViewPrivacyWall);
+        biographyTextView = (TextView) findViewById(R.id.biographyTextView);
+        avatar = (ImageView) findViewById(R.id.avatarImagePrivacyWall);
+        background = (ImageView) findViewById(R.id.backGroundImage);
+        postNumberTextView = (TextView) findViewById(R.id.postNumberTextView);
+        followerTextView = (TextView) findViewById(R.id.followerNumberTextView);
+        followingTextView = (TextView) findViewById(R.id.followingNumberTextView);
 
-        userName.setText(account.getUserName());
-        biography.setText(account.getBiography());
+        userNameTextView.setText(account.getUserName());
+        biographyTextView.setText(account.getBiography());
         // Set avatar image
         String url= account.getUrlAvatar();
         Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(500,500).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
@@ -159,6 +150,9 @@ public class PrivacyWallActivity extends AppCompatActivity {
         String url_background= account.getUrlBackground();
         Glide.with(this).load(url_background).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).centerCrop().error(R.color.colorLittleGray)).into(background);
 
+        postNumberTextView.setText(getNumber(account.getPostNumber()));
+        followerTextView.setText(getNumber(account.getFollowerNumber()));
+        followingTextView.setText(getNumber(account.getFollowNumber()));
     }
 
     public void loadPost(){
@@ -169,19 +163,71 @@ public class PrivacyWallActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     //itemArrayList = new ArrayList<Item>(response.body().getItems());
                     postArrayAdapter.addAll(response.body());
-                    Log.d("MainActivity", "posts loaded from API");
+                    Log.d("PrivacyWallActivity", "posts loaded from API");
                 }else {
                     int statusCode  = response.code();
-                    Log.d("MainActivity", "fail loaded from API");
-                    Log.d("MainActivity", ((Integer)statusCode).toString());
+                    Log.d("PrivacyWallActivity", "fail loaded from API");
+                    Log.d("PrivacyWallActivity", ((Integer)statusCode).toString());
                     // handle request errors depending on status code
                 }
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("MainActivity", t.getMessage());
+                Log.d("PrivacyWallActivity", t.getMessage());
             }
         });
+    }
+    public String getNumber(int number){
+        int n;
+        if(number<999){
+            return Integer.toString(number);
+        }
+        else{
+            if(number<999999){
+                n = number/1000;
+                return Integer.toString(n).concat("K");
+            }
+            else{
+                if(number<999999999){
+                    n = number/1000000;
+                    return Integer.toString(n).concat("Tr");
+                }
+                else{
+                    n = number/1000000000;
+                    return Integer.toString(n).concat("T");
+                }
+            }
+        }
+
+    }
+    public void showMenu (View view)
+    {
+        PopupMenu menu = new PopupMenu (context, view);
+        menu.setOnMenuItemClickListener (new PopupMenu.OnMenuItemClickListener ()
+        {
+            @Override
+            public boolean onMenuItemClick (MenuItem item)
+            {
+                int id = item.getItemId();
+                switch (id)
+                {
+                    case R.id.item_logout:{
+                        SharedPreferences sharedPreferences= getSharedPreferences("user",Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("userName","");
+                        editor.commit();
+                        Intent intent = new Intent(context,LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        break;}
+
+                }
+                return true;
+            }
+        });
+        menu.inflate (R.menu.popup_menu_privacy_wall);
+        menu.show();
     }
 
 }

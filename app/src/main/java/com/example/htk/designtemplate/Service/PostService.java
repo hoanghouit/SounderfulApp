@@ -21,4 +21,7 @@ public interface PostService {
 
     @GET("posts/{userName}/")
     Call<List<Post>> getPostsWall(@Path("userName") String userName);
+
+    @GET("posts/search/{key}/")
+    Call<List<Post>> searchPost(@Path("key") String userName);
 }

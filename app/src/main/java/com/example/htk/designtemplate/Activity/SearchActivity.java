@@ -1,6 +1,7 @@
 package com.example.htk.designtemplate.Activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -30,6 +31,8 @@ public class SearchActivity extends AppCompatActivity {
     private ImageView clearIcon;
     private Context context;
     private static final int ACTIVITY_NUM = 1;
+    private AccountSearch_Fragment accountSearch_fragment = new AccountSearch_Fragment();
+    private TrackSearch_Fragment trackSearch_fragment= new TrackSearch_Fragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,7 @@ public class SearchActivity extends AppCompatActivity {
         searchEditText = (EditText) findViewById(R.id.searchEditText_searchActivity);
         clearIcon = (ImageView) findViewById(R.id.clearImageIcon_searchActivity);
         context= getApplicationContext();
+
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -67,14 +71,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String  lengthText = searchEditText.getText().toString();
-                if(lengthText.length()>0)
-                {
-                    clearIcon.setVisibility(View.VISIBLE);
-                }
-                else{
-                    clearIcon.setVisibility(View.GONE);
-                }
+               search();
             }
         });
         //setupBottomNavigationView
@@ -88,9 +85,25 @@ public class SearchActivity extends AppCompatActivity {
     }
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new AccountSearch_Fragment(), getResources().getString(R.string.account));
-        adapter.addFragment(new TrackSearch_Fragment(), getResources().getString(R.string.track));
+        adapter.addFragment(accountSearch_fragment, getResources().getString(R.string.account));
+        adapter.addFragment(trackSearch_fragment, getResources().getString(R.string.track));
         viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                search();
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                search();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -121,7 +134,33 @@ public class SearchActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
+    public void search(){
+        String  text = searchEditText.getText().toString().trim();
+        if(text.length()>0)
+        {
+            clearIcon.setVisibility(View.VISIBLE);
+            if(viewPager.getCurrentItem()==0){
+                accountSearch_fragment.searchAccounts(text);
+            }
+            else{
+                trackSearch_fragment.searchPosts(text);
+            }
+            SharedPreferences preferences= getSharedPreferences("searchActivity", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor=preferences.edit();
+            editor.putString("keySearch",text);
+            editor.commit();
+        }
+        else{
+            clearIcon.setVisibility(View.GONE);
+            if(viewPager.getCurrentItem()==0){
+                accountSearch_fragment.recentlySearch();
+            }
+            else{
+                trackSearch_fragment.recentlySearch();
+            }
 
+        }
+    }
     public void setActionBar(){
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar_searchActivity);
         setSupportActionBar(myToolbar);

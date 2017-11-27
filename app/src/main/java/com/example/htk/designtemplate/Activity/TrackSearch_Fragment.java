@@ -1,20 +1,30 @@
 package com.example.htk.designtemplate.Activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.htk.designtemplate.Adapter.TrackSearchAdapter;
-import com.example.htk.designtemplate.Model.Account;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
+import com.example.htk.designtemplate.Service.ApiUtils;
+import com.example.htk.designtemplate.Service.PostService;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TrackSearch_Fragment extends Fragment {
+    private PostService mService;
     private ListView listViewTrack;
     private TrackSearchAdapter trackSearchAdapter;
     private ArrayList<Post> postArrayList= new ArrayList<Post>();
@@ -36,38 +46,48 @@ public class TrackSearch_Fragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-        // add sample data to list view
-        adđSampleItems();
         // Get view
         View view = getView();
         // set adaper for list view
         listViewTrack = (ListView) view.findViewById(R.id.listView_trackSearchActivity);
         trackSearchAdapter = new TrackSearchAdapter(getActivity(),R.layout.item_account_search_listview,postArrayList);
         listViewTrack.setAdapter(trackSearchAdapter);
+        // set retrofit accont service
+        mService = ApiUtils.getPostService();
+        recentlySearch();
 
     }
-    public void adđSampleItems(){
-        String url="http://genknews.genkcdn.vn/2017/smile-emojis-icon-facebook-funny-emotion-women-s-premium-long-sleeve-t-shirt-1500882676711.jpg";
-        String url_image="https://images.vexels.com/media/users/6821/74972/raw/1054e351afe112bca797a70d67d93f9e-purple-daisies-blue-background.jpg";
+    public void searchPosts(String key){
+        mService.searchPost(key).enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
 
-        Post p = new Post();
-        p.setTitle("Mashup Em gái mưa (Hương Tràm) - Từ hôm nay (Chi Pu)| Ghitar version");
-        p.setUrlImage(url_image);
-        Account a=new Account();
-        a.setUserName("yudaidang");
-        p.setAccount(a);
-        postArrayList.add(p);
-
-        Post pi = new Post();
-        pi.setTitle("em gái mưa");;
-        pi.setAccount(a);
-        postArrayList.add(pi);
-
-        Post pio = new Post();
-        pio.setTitle("Ngày em đến");
-        pio.setAccount(a);
-        postArrayList.add(pio);
-
+                if(response.isSuccessful()) {
+                    //itemArrayList = new ArrayList<Item>(response.body().getItems());
+                    postArrayList.clear();
+                    for (Post post:response.body()){
+                        postArrayList.add(post);
+                    }
+                    trackSearchAdapter.notifyDataSetChanged();
+                    Log.d("PostSearchFragment", "posts loaded from API");
+                }else {
+                    int statusCode  = response.code();
+                    Log.d("PostSearchFragment", "fail loaded from API");
+                    Log.d("PostSearchFragment", ((Integer)statusCode).toString());
+                    // handle request errors depending on status code
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+                Log.d("PostSearchFragment", t.getMessage());
+            }
+        });
+    }
+    public void recentlySearch(){
+        // set recently search
+        SharedPreferences sharedPreferences= getActivity().getSharedPreferences("searchActivity", Context.MODE_PRIVATE);
+        String recentlyKeySearch = sharedPreferences.getString("keySearch","");
+        searchPosts(recentlyKeySearch);
     }
 
 }

@@ -28,6 +28,18 @@ public class Account {
     @Expose
     private String urlBackground;
 
+    @SerializedName("num_of_post")
+    @Expose
+    private int postNumber;
+
+    @SerializedName("num_of_follower")
+    @Expose
+    private int followerNumber;
+
+    @SerializedName("num_of_follow")
+    @Expose
+    private int followNumber;
+
     public String getUserName() {
         return userName;
     }
@@ -66,5 +78,29 @@ public class Account {
 
     public void setUrlBackground(String urlBackground) {
         this.urlBackground = urlBackground;
+    }
+
+    public int getPostNumber() {
+        return postNumber;
+    }
+
+    public void setPostNumber(int postNumber) {
+        this.postNumber = postNumber;
+    }
+
+    public int getFollowerNumber() {
+        return followerNumber;
+    }
+
+    public void setFollowerNumber(int followerNumber) {
+        this.followerNumber = followerNumber;
+    }
+
+    public int getFollowNumber() {
+        return followNumber;
+    }
+
+    public void setFollowNumber(int followNumber) {
+        this.followNumber = followNumber;
     }
 }

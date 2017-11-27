@@ -12,14 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/noActionBar">
         <activity android:name=".Activity.MainActivity">
-
-
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
+            </intent-filter>-->
         </activity>
         <activity
             android:name=".Activity.PrivacyWallActivity"
@@ -30,15 +27,17 @@
         <activity android:name=".Activity.RecentlySearch" />
         <activity android:name=".Activity.NotificationActivity" />
         <activity android:name=".Activity.CommentActivity" />
-        <activity android:name=".Activity.LoginActivity" />
-        <activity android:name=".Activity.SignUpActivity" />
-        <activity android:name=".Activity.NewPostActivity">
-          <!--  <intent-filter>
+        <activity android:name=".Activity.LoginActivity"
+            android:noHistory="true">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
+        <activity android:name=".Activity.SignUpActivity"
+            android:noHistory="true"/>
+        <activity android:name=".Activity.NewPostActivity"/>
         <activity android:name=".Activity.MusicPlayer" />
     </application>
 

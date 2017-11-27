@@ -57,6 +57,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"></LinearLayout>
+        android:layout_weight="1"
+        android:gravity="center_vertical|center_horizontal">
+        <TextView
+            android:textSize="@dimen/medium_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_account_login"/>
+        <TextView
+            android:id="@+id/signupTextView_Login"
+            android:textSize="@dimen/medium_text"
+            android:layout_marginLeft="@dimen/extra_small_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlue"
+            android:text="@string/signup"/>
+    </LinearLayout>
 
 </LinearLayout>
