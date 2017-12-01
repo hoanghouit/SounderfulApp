@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:paddingLeft="@dimen/extra_small_margin"
+    android:paddingRight="@dimen/extra_small_margin"
     android:orientation="vertical"
     tools:context="com.example.htk.designtemplate.Activity.NewPostActivity">
     <android.support.v7.widget.Toolbar
@@ -34,6 +37,7 @@
                 android:textSize="18dp"
                 android:layout_toRightOf="@id/backButton_NewPostActivity"/>
             <Button
+                android:id="@+id/uploadButton_newPost"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
@@ -44,6 +48,7 @@
     </android.support.v7.widget.Toolbar>
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <LinearLayout
@@ -51,7 +56,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp">
             <ImageView
-                android:id="@+id/avatarImage_commentActivity"
+                android:id="@+id/avatarImage_newPost"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:src="@mipmap/ic_launcher_round"
@@ -66,7 +71,7 @@
                 android:layout_gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/commentTextView_commentActivity"
+                    android:id="@+id/userName_newPost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -79,49 +84,78 @@
                     android:textStyle="bold" />
                 <TextView
                     android:gravity="left"
-                    android:id="@+id/timeTextView_commentActivity"
+                    android:id="@+id/timeTextView_newPost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="12dp"
                     android:text="10:12 12/12/2016"
                     android:maxLines="1"
                     android:ellipsize="end"/>
-
             </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="0dp"
             android:background="@color/colorWhite"
             android:orientation="vertical">
 
             <EditText
+                android:id="@+id/title_newPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Tiêu đề ..."
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:singleLine="true"
+                android:maxLines="2"
+                android:singleLine="false"
                 android:textSize="18sp"
                 android:textStyle="normal" />
-
             <EditText
+                android:id="@+id/trackEditTextView_newPost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Bài hát ..."
+                android:maxLines="2"
+                android:singleLine="false"
+                android:textSize="18sp"
+                android:textColor="@color/colorDark"
+                android:textStyle="normal"
+                android:enabled="false"
+                android:visibility="gone"/>
+            <EditText
+                android:id="@+id/descriptionTextView_newPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nội dung ..."
-                android:inputType="textMultiLine"
-                android:selectAllOnFocus="false"
+                android:maxLines="3"
                 android:singleLine="false"
-                android:textSize="18sp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"/>
+                android:textSize="18sp" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/trackImage_newPost"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@color/colorLittleGray"
+                    android:scaleType="centerCrop"/>
+                <ImageView
+                    android:id="@+id/addTrackImage_newPost"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:alpha="0.3"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@mipmap/ic_add"/>
+            </FrameLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <Button
+                    android:id="@+id/record_newPost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_micro_red"
@@ -134,6 +168,7 @@
                     android:textSize="16sp"
                     />
                 <Button
+                    android:id="@+id/loadFromMemory_newPost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_upload_blue"
@@ -145,18 +180,7 @@
                     android:textStyle="normal"
                     android:textSize="16sp"
                     />
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_image_green"
-                    android:gravity="center_vertical"
-                    android:text="Thêm hình ảnh"
-                    android:background="@color/colorWhite"
-                    android:padding="5dp"
-                    android:textAllCaps="false"
-                    android:textStyle="normal"
-                    android:textSize="16sp"
-                    />
+
             </LinearLayout>
 
         </LinearLayout>

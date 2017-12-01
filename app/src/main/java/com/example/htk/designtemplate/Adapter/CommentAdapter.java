@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.htk.designtemplate.Model.Comment;
 import com.example.htk.designtemplate.R;
+import com.example.htk.designtemplate.Service.ApiUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -58,7 +59,7 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         commentText.setText(text);
 
         // Set avatar image
-        String url= comment.getAccount().getUrlAvatar();
+        String url= ApiUtils.getImageUrl((comment.getAccount().getUrlAvatar()));
         Glide.with(context).load(url).apply(RequestOptions.circleCropTransform().placeholder(R.mipmap.ic_launcher_round)).into(avatar);
 
         // set time

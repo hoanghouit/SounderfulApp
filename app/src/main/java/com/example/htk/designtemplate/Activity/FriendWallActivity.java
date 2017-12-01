@@ -39,7 +39,7 @@ public class FriendWallActivity extends AppCompatActivity {
     private ImageView backImage;
     private Button followButton;
     private AccountService accountService;
-    private String userName;
+    private String userNameGlobal;
     private View header;
     private Intent intent;
     private PostService mService;
@@ -51,7 +51,7 @@ public class FriendWallActivity extends AppCompatActivity {
         intent = getIntent();
 
         //
-        userName = intent.getStringExtra("userName");
+        userNameGlobal = intent.getStringExtra("userName");
         // set retrofit account service
         accountService = ApiUtils.getAccountService();
 
@@ -105,31 +105,9 @@ public class FriendWallActivity extends AppCompatActivity {
         int ACTIVITY_NUM = intent.getIntExtra("indexActivity",1);
         BottomNavigationViewHelper.setupBottomNavigationView(this,ACTIVITY_NUM);
     }
-    public void addPost(){
-        String url1="http://genknews.genkcdn.vn/2017/smile-emojis-icon-facebook-funny-emotion-women-s-premium-long-sleeve-t-shirt-1500882676711.jpg";
-        String url_image="https://images.vexels.com/media/users/6821/74972/raw/1054e351afe112bca797a70d67d93f9e-purple-daisies-blue-background.jpg";
-
-        Post p = new Post();
-        p.setTitle("Mashup Em gái mưa (Hương Tràm) - Từ hôm nay (Chi Pu)| Ghitar version");
-        p.setUrlImage(url_image);
-        Account a=new Account();
-        a.setUserName("yudaidang");
-        p.setAccount(a);
-        postArray.add(p);
-
-        Post pi = new Post();
-        pi.setTitle("em gái mưa");;
-        pi.setAccount(a);
-        postArray.add(pi);
-
-        Post pio = new Post();
-        pio.setTitle("Ngày em đến");
-        pio.setAccount(a);
-        postArray.add(pio);
-    }
 
     public void loadUserInfo(){
-        accountService.getAccountDetail(userName).enqueue(new Callback<Account>() {
+        accountService.getAccountDetail(userNameGlobal).enqueue(new Callback<Account>() {
             @Override
             public void onResponse(Call<Account> call, Response<Account> response) {
 
@@ -158,13 +136,13 @@ public class FriendWallActivity extends AppCompatActivity {
         TextView follower = (TextView) findViewById(R.id.followerNumberTextView_friendwall);
         TextView following = (TextView) findViewById(R.id.followingNumberTextView_friendwall);
 
-        userName.setText(account.getUserName());
+        userName.setText(userNameGlobal);
         biography.setText(account.getBiography());
         // Set avatar image
-        String url= account.getUrlAvatar();
+        String url= ApiUtils.getImageUrl(account.getUrlAvatar());
         Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(500,500).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
 
-        String url_background= account.getUrlBackground();
+        String url_background= ApiUtils.getImageUrl(account.getUrlBackground());
         Glide.with(this).load(url_background).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).error(R.color.colorLittleGray)).into(background);
 
         postNumber.setText(getNumber(account.getPostNumber()));
@@ -174,7 +152,7 @@ public class FriendWallActivity extends AppCompatActivity {
     }
 
     public void loadPost(){
-        mService.getPostsWall(userName).enqueue(new Callback<List<Post>>() {
+        mService.getPostsWall(userNameGlobal).enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
 
@@ -191,7 +169,7 @@ public class FriendWallActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("FriendWallActivity", t.getMessage());
+                Log.d("FriendWallActivity", "fail");
             }
         });
     }

@@ -1,6 +1,8 @@
 package com.example.htk.designtemplate.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private Toolbar myToolbar;
     private PostService mService;
+    protected static String userName;
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +50,18 @@ public class MainActivity extends AppCompatActivity {
         //setupBottomNavigationView
         BottomNavigationViewHelper.setupBottomNavigationView(this,ACTIVITY_NUM);
 
+        // set user name
+        SharedPreferences sharedPreferences= getSharedPreferences("user",Context.MODE_PRIVATE);
+        userName = sharedPreferences.getString("userName","");
+
+        // set progress dialog
+        createProgressDialog();
+        progressDialog.show();
+
         // set retrofit service
          mService = ApiUtils.getPostService();
          loadPost();
+
 
     }
 
@@ -65,11 +78,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadPost(){
-        mService.getPostsNewsfeed("anhtoan441996").enqueue(new Callback<List<Post>>() {
+        mService.getPostsNewsfeed(userName).enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
 
                 if(response.isSuccessful()) {
+                    progressDialog.dismiss();
                     //itemArrayList = new ArrayList<Item>(response.body().getItems());
                     postArrayAdapter.addAll(response.body());
                     Log.d("MainActivity", "posts loaded from API");
@@ -82,9 +96,15 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("MainActivity", t.getMessage());
+                Log.d("MainActivity","fail");
             }
         });
+    }
+    public void createProgressDialog(){
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Uploading ...");
+        progressDialog.setProgress(0);
     }
 
 }

@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.htk.designtemplate.Activity.FriendWallActivity;
 import com.example.htk.designtemplate.Model.Account;
 import com.example.htk.designtemplate.R;
+import com.example.htk.designtemplate.Service.ApiUtils;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class AccountSearchAdapter extends ArrayAdapter<Account> {
         biography.setText(account.getBiography());
 
         // Set avater image
-        String url= account.getUrlAvatar();
+        String url= ApiUtils.getImageUrl(account.getUrlAvatar());
         Glide.with(context).load(url).apply(RequestOptions.circleCropTransform().placeholder(R.mipmap.ic_launcher_round)).into(avatar);
 
         // set action for clicking view

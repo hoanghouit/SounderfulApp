@@ -79,7 +79,7 @@ public class TrackSearch_Fragment extends Fragment {
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("PostSearchFragment", t.getMessage());
+                Log.d("PostSearchFragment", "fail");
             }
         });
     }

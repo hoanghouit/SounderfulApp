@@ -62,7 +62,7 @@ public class SignUpActivity extends AppCompatActivity {
         availableUserNameToast = getResources().getString(R.string.available_username_error);
         confirmPasswordToast = getResources().getString(R.string.confirm_password_error);
         completedToast = getResources().getString(R.string.completed_signup_error);
-        successfulSignupToast = getResources().getString(R.string.successul_signup);
+        successfulSignupToast = getResources().getString(R.string.successful_signup);
         failSignupToast = getResources().getString(R.string.fail_signup);
 
         userNameEditText.addTextChangedListener(new TextWatcher() {
@@ -145,7 +145,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Account> call, Throwable t) {
                 MultipleToast.showToast(failSignupToast);
-                Log.d("MainActivity", t.getMessage());
+                Log.d("MainActivity", "fail");
             }
         });
     }
@@ -196,7 +196,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<existsUser> call,Throwable t) {
-                Log.d("SignUpActivity", t.getMessage());
+                Log.d("SignUpActivity", "fail");
             }
         });
     }

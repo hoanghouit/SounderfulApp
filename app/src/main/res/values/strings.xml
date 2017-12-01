@@ -16,9 +16,13 @@
     <string name="completed_signup_error">Vui lòng điền đầy đủ thông tin</string>
     <string name="no_account_login">Bạn chưa có tài khoản?</string>
     <string name="signup">Đăng ký</string>
-    <string name="successul_signup">Đăng ký tài khoản thành công</string>
+    <string name="successful_signup">Đăng ký tài khoản thành công</string>
     <string name="fail_signup">Đăng ký tài khoản không thành công</string>
-    <string name="successul_login">Đăng nhập thành công</string>
+    <string name="successful_login">Đăng nhập thành công</string>
     <string name="incorrect_login">Tên đăng nhập hoặc mật khẩu không chính xác</string>
     <string name="fail_login">Đăng nhập không thành công</string>
+    <string name="successful_upload">Đăng tải bài hát thành công</string>
+    <string name="title_newpost_error">Vui lòng nhập tên bài hát</string>
+    <string name="track_newpost_error">Vui lòng chọn bài hát</string>
+    <string name="fail_upload">Đăng tải bài hát không thành công</string>
 </resources>

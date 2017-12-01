@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = (EditText) findViewById(R.id.password_Login);
         loginButton = (Button) findViewById(R.id.loginButton);
         completedToast = getResources().getString(R.string.completed_signup_error);
-        successfullyloginToast = getResources().getString(R.string.successul_login);
+        successfullyloginToast = getResources().getString(R.string.successful_login);
         failedLoginToast = getResources().getString(R.string.fail_login);
         incorrectLoginToast = getResources().getString(R.string.incorrect_login);
         lengthPasswordToast = getResources().getString(R.string.length_password_error);
@@ -189,7 +189,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<SignUpActivity.existsUser> call, Throwable t) {
                 MultipleToast.showToast(failedLoginToast);
-                Log.d("LoginActivity", t.getMessage());
+                Log.d("LoginActivity", "fail");
             }
         });
     }

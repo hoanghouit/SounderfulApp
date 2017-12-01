@@ -14,4 +14,7 @@ public class ApiUtils {
     public static AccountService getAccountService() {
         return RetrofitClient.getClient(BASE_URL).create(AccountService.class);
     }
+    public static String getImageUrl(String filename){
+        return BASE_URL + "download/image/" + filename +"/";
+    }
 }

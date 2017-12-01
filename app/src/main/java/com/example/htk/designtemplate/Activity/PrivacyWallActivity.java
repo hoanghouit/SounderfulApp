@@ -128,7 +128,7 @@ public class PrivacyWallActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<Account> call, Throwable t) {
-                Log.d("PrivacyWallActivity", t.getMessage());
+                Log.d("PrivacyWallActivity", "fail");
             }
         });
     }
@@ -141,13 +141,13 @@ public class PrivacyWallActivity extends AppCompatActivity {
         followerTextView = (TextView) findViewById(R.id.followerNumberTextView);
         followingTextView = (TextView) findViewById(R.id.followingNumberTextView);
 
-        userNameTextView.setText(account.getUserName());
+        userNameTextView.setText(MainActivity.userName);
         biographyTextView.setText(account.getBiography());
         // Set avatar image
-        String url= account.getUrlAvatar();
+        String url= ApiUtils.getImageUrl(account.getUrlAvatar());
         Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(500,500).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
 
-        String url_background= account.getUrlBackground();
+        String url_background= ApiUtils.getImageUrl(account.getUrlBackground());
         Glide.with(this).load(url_background).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).centerCrop().error(R.color.colorLittleGray)).into(background);
 
         postNumberTextView.setText(getNumber(account.getPostNumber()));
@@ -173,7 +173,7 @@ public class PrivacyWallActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("PrivacyWallActivity", t.getMessage());
+                Log.d("PrivacyWallActivity", "fail");
             }
         });
     }

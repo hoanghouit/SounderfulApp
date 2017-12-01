@@ -27,6 +27,7 @@ import com.example.htk.designtemplate.Activity.PrivacyWallActivity;
 import com.example.htk.designtemplate.Activity.SearchActivity;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
+import com.example.htk.designtemplate.Service.ApiUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -122,11 +123,11 @@ public class PostAdapter extends ArrayAdapter<Post> {
         userName.setText(post.getAccount().getUserName());
 
         // Set avatar image
-        String url= post.getAccount().getUrlAvatar();
+        String url= ApiUtils.getImageUrl(post.getAccount().getUrlAvatar());
         Glide.with(context).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(200,200).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
 
         //Set track image
-        String url_image=post.getUrlImage();
+        String url_image= ApiUtils.getImageUrl(post.getUrlImage());
         Glide.with(context).load(url_image).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(800,400).error(R.color.colorLittleGray)).into(imageTrack);
 
         // Set description

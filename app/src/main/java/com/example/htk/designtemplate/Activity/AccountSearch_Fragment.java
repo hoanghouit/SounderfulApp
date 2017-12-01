@@ -86,7 +86,7 @@ public class AccountSearch_Fragment extends Fragment {
             }
             @Override
             public void onFailure(Call<List<Account>> call, Throwable t) {
-                Log.d("AccountSearchFragment", t.getMessage());
+                Log.d("AccountSearchFragment", "fail");
             }
         });
     }

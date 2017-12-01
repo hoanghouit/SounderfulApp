@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
+import com.example.htk.designtemplate.Service.ApiUtils;
 
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class TrackSearchAdapter extends ArrayAdapter<Post> {
         title.setText(post.getTitle());
 
         // Set avater image
-        String url= post.getUrlImage();
+        String url= ApiUtils.getImageUrl(post.getUrlImage());
         Glide.with(context).load(url).apply(RequestOptions.circleCropTransform().placeholder(R.mipmap.ic_launcher_round)).into(image);
 
         return convertView;
