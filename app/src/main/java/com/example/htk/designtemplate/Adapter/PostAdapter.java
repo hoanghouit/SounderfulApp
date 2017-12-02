@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,13 +26,21 @@ import com.example.htk.designtemplate.Activity.MusicPlayer;
 import com.example.htk.designtemplate.Activity.NotificationActivity;
 import com.example.htk.designtemplate.Activity.PrivacyWallActivity;
 import com.example.htk.designtemplate.Activity.SearchActivity;
+import com.example.htk.designtemplate.Model.LikeModel;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
 import com.example.htk.designtemplate.Service.ApiUtils;
+import com.example.htk.designtemplate.Service.PostService;
+import com.example.htk.designtemplate.Utils.MultipleToast;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by HTK on 11/12/2017.
@@ -39,8 +48,11 @@ import java.util.Locale;
 
 public class PostAdapter extends ArrayAdapter<Post> {
     private Activity context;
-    String currentUser;
-
+    private String currentUser;
+    private List<Integer> likedPostIds = null;
+    private PostService postService = ApiUtils.getPostService();
+    //private ImageView likeIcon;
+    //private TextView likeNumber;
     public PostAdapter(Activity context, int layoutID, List<Post> objects) {
         super(context, layoutID, objects);
         this.context = context;
@@ -48,6 +60,9 @@ public class PostAdapter extends ArrayAdapter<Post> {
         SharedPreferences sharedPreferences= context.getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
         currentUser = sharedPreferences.getString("userName","");
 
+    }
+    public void setLikedPostIds(List<Integer> likedPostIds){
+        this.likedPostIds = likedPostIds;
     }
 
     @Override
@@ -57,7 +72,6 @@ public class PostAdapter extends ArrayAdapter<Post> {
                     false);
         }
 
-
         // Get item
         final Post post = getItem(position);
 
@@ -66,7 +80,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         TextView userName = (TextView) convertView.findViewById(R.id.usernameTextView);
         TextView dateTime = (TextView) convertView.findViewById(R.id.timeTextView);
         final TextView description = (TextView) convertView.findViewById(R.id.descriptionTextView);
-        TextView likeNumber = (TextView) convertView.findViewById(R.id.likeNumberTextView);
+        final TextView likeNumber = (TextView) convertView.findViewById(R.id.likeNumberTextView);
         TextView commentNumber = (TextView) convertView.findViewById(R.id.commentNumberTextView);
         TextView listenNumber = (TextView) convertView.findViewById(R.id.listenNumberTextView);
         ImageView avatar = (ImageView) convertView.findViewById(R.id.avatarImageView);
@@ -77,6 +91,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         final ImageView likeIcon = (ImageView) convertView.findViewById(R.id.likeIconImage);
         SeekBar seekBar = (SeekBar) convertView.findViewById(R.id.trackTimeSeekBar);
         final TextView readMore = (TextView) convertView.findViewById(R.id.readMoreTextView);
+        final boolean[] liked = new boolean[1];
 
         // set seek bar width full parent
         seekBar.setPadding(0,0,0,0);
@@ -130,6 +145,19 @@ public class PostAdapter extends ArrayAdapter<Post> {
         String url_image= ApiUtils.getImageUrl(post.getUrlImage());
         Glide.with(context).load(url_image).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(800,400).error(R.color.colorLittleGray)).into(imageTrack);
 
+        // set like icon
+
+        if(likedPostIds != null){
+            if(likedPostIds.contains((Integer)post.getPostId())) {
+                    likeIcon.setImageResource(R.drawable.ic_liked);
+                    liked[0] = true;
+            }
+            else{
+                liked[0] = false;
+                likeIcon.setImageResource(R.drawable.ic_like);
+            }
+        }
+
         // Set description
         description.setText(post.getDescription());
         // set readmore text view
@@ -173,7 +201,25 @@ public class PostAdapter extends ArrayAdapter<Post> {
             }
         });
 
-        // Set other attribute of post ...
+        // set action for clicking like icon
+        likeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(liked[0]){
+                    liked[0] = false;
+                    likeIcon.setImageResource(R.drawable.ic_like);
+                    likeNumber.setText(Integer.toString(Integer.parseInt(likeNumber.getText().toString())-1));
+                    deleteLike(post.getPostId());
+                }
+                else{
+                    liked[0] = true;
+                    likeIcon.setImageResource(R.drawable.ic_liked);
+                    likeNumber.setText(Integer.toString(Integer.parseInt(likeNumber.getText().toString())+1));
+                    createLike(post.getPostId());
+                }
+            }
+        });
+
         return convertView;
     }
     public void showMenu (View view)
@@ -252,8 +298,50 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 }
             }
         }
-
+    }
+    public void createLike(final int postId){
+        postService.createLike(currentUser,Integer.toString(postId)).enqueue(new Callback<LikeModel>() {
+            @Override
+            public void onResponse(Call<LikeModel> call, Response<LikeModel> response) {
+                if(response.isSuccessful()) {
+                    likedPostIds.add(postId);
+                    Log.d("PostAdapter", "create like from API");
+                }else {
+                    MultipleToast.showToast("Yêu thích không thành công");
+                    int statusCode  = response.code();
+                    Log.d("PostAdapter", "fail create like from API");
+                    Log.d("PostAdapter", ((Integer)statusCode).toString());
+                    // handle request errors depending on status code
+                }
+            }
+            @Override
+            public void onFailure(Call<LikeModel> call, Throwable t) {
+                MultipleToast.showToast("Yêu thích không thành công");
+                Log.d("PostAdapter", "fail");
+            }
+        });
     }
 
-
+    public void deleteLike(final int postId){
+        postService.deleteLike(currentUser,Integer.toString(postId)).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()) {
+                    likedPostIds.remove((Integer)postId);
+                    Log.d("PostAdapter", "delete like from API");
+                }else {
+                    MultipleToast.showToast("Hủy yêu thích không thành công");
+                    int statusCode  = response.code();
+                    Log.d("PostAdapter", "delete create like from API");
+                    Log.d("PostAdapter", ((Integer)statusCode).toString());
+                    // handle request errors depending on status code
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                MultipleToast.showToast("Hủy yêu thích không thành công");
+                Log.d("PostAdapter", "fail");
+            }
+        });
+    }
 }

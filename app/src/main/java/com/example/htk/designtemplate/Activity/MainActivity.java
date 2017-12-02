@@ -42,13 +42,13 @@ public class MainActivity extends AppCompatActivity {
         // set up custom action bar
         setActionBar();
 
+        //setupBottomNavigationView
+        BottomNavigationViewHelper.setupBottomNavigationView(this,ACTIVITY_NUM);
+
         // set adapter for list view
         listView = (ListView) findViewById(R.id.listView);
         postArrayAdapter = new PostAdapter(this,R.layout.item_post_listview,postArray);
         listView.setAdapter(postArrayAdapter);
-
-        //setupBottomNavigationView
-        BottomNavigationViewHelper.setupBottomNavigationView(this,ACTIVITY_NUM);
 
         // set user name
         SharedPreferences sharedPreferences= getSharedPreferences("user",Context.MODE_PRIVATE);
@@ -56,13 +56,13 @@ public class MainActivity extends AppCompatActivity {
 
         // set progress dialog
         createProgressDialog();
-        progressDialog.show();
+        //progressDialog.show();
 
         // set retrofit service
          mService = ApiUtils.getPostService();
+
+        // load posts
          loadPost();
-
-
     }
 
     public void setActionBar(){
@@ -76,16 +76,18 @@ public class MainActivity extends AppCompatActivity {
         //tắt hiệu ứng khi chuyển activity
         overridePendingTransition(0, 0);
     }
-
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        loadPost();
+    }
     public void loadPost(){
         mService.getPostsNewsfeed(userName).enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
 
                 if(response.isSuccessful()) {
-                    progressDialog.dismiss();
-                    //itemArrayList = new ArrayList<Item>(response.body().getItems());
-                    postArrayAdapter.addAll(response.body());
+                    getLikedPosts(response.body());
                     Log.d("MainActivity", "posts loaded from API");
                 }else {
                     int statusCode  = response.code();
@@ -106,5 +108,30 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setMessage("Uploading ...");
         progressDialog.setProgress(0);
     }
-
+    public void getLikedPosts(final List<Post> postList){
+        mService.getLikedPosts(userName).enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                if(response.isSuccessful()) {
+                    ArrayList<Integer> arr = new ArrayList<Integer>();
+                    for(Post p: response.body()){
+                        arr.add( p.getPostId());
+                    }
+                    postArrayAdapter.setLikedPostIds(arr);
+                    Log.d("MainActivity", "posts loaded from API");
+                }else {
+                    int statusCode  = response.code();
+                    Log.d("MainActivity", "fail loaded from API");
+                    Log.d("MainActivity", ((Integer)statusCode).toString());
+                    // handle request errors depending on status code
+                }
+                postArrayAdapter.addAll(postList);
+                progressDialog.dismiss();
+            }
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+                Log.d("MainActivity","fail");
+            }
+        });
+    }
 }

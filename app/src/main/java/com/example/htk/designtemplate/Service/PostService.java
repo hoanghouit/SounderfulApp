@@ -1,5 +1,6 @@
 package com.example.htk.designtemplate.Service;
 
+import com.example.htk.designtemplate.Model.LikeModel;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.Model.PostModel;
 
@@ -51,6 +52,18 @@ public interface PostService {
     @PUT("api/posts/{id}/")
     Call<ResponseBody> completePost(@Path("id") int id, @Body PostModel postModel);
 
-    @DELETE("api/posts/{id}")
+    @DELETE("api/posts/{id}/")
     Call<ResponseBody> deletePost(@Path("id") int id);
+
+    @GET("posts/{userName}/like/")
+    Call<List<Post>> getLikedPosts(@Path("userName") String userName);
+
+    @FormUrlEncoded
+    @POST("api/likes/")
+    Call<LikeModel> createLike(@Field("userName") String userName, @Field("postId") String postId);
+
+    @FormUrlEncoded
+    @POST("likes/delete/")
+    Call<ResponseBody> deleteLike(@Field("username") String userName, @Field("postid") String postId);
+
 }

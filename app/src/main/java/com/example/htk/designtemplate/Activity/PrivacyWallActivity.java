@@ -52,6 +52,7 @@ public class PrivacyWallActivity extends AppCompatActivity {
     private String userName;
     private PostService mService;
     private Activity context =this;
+    private ArrayList<Integer> likedPostIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,11 @@ public class PrivacyWallActivity extends AppCompatActivity {
         //tắt hiệu ứng khi chuyển activity
         overridePendingTransition(0, 0);
     }
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        loadPost();
+    }
 
     public void loadUserInfo(){
         accountService.getAccountDetail(userName).enqueue(new Callback<Account>() {
@@ -161,8 +167,7 @@ public class PrivacyWallActivity extends AppCompatActivity {
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
 
                 if(response.isSuccessful()) {
-                    //itemArrayList = new ArrayList<Item>(response.body().getItems());
-                    postArrayAdapter.addAll(response.body());
+                    getLikedPosts(response.body());
                     Log.d("PrivacyWallActivity", "posts loaded from API");
                 }else {
                     int statusCode  = response.code();
@@ -174,6 +179,31 @@ public class PrivacyWallActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
                 Log.d("PrivacyWallActivity", "fail");
+            }
+        });
+    }
+    public void getLikedPosts(final List<Post> postList){
+        mService.getLikedPosts(userName).enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                if(response.isSuccessful()) {
+                    ArrayList<Integer> arr = new ArrayList<Integer>();
+                    for(Post p: response.body()){
+                        arr.add( p.getPostId());
+                    }
+                    postArrayAdapter.setLikedPostIds(arr);
+                    Log.d("MainActivity", "posts loaded from API");
+                }else {
+                    int statusCode  = response.code();
+                    Log.d("MainActivity", "fail loaded from API");
+                    Log.d("MainActivity", ((Integer)statusCode).toString());
+                    // handle request errors depending on status code
+                }
+                postArrayAdapter.addAll(postList);
+            }
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+                Log.d("MainActivity","fail");
             }
         });
     }
