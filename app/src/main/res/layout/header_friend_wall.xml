@@ -76,7 +76,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:text="37"
                             android:textSize="20dp"
                             android:textAlignment="center"
                             android:textColor="@color/colorDark"
@@ -98,7 +97,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:text="159K"
                             android:textSize="20dp"
                             android:textAlignment="center"
                             android:textColor="@color/colorDark"
@@ -120,7 +118,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:text="105"
                             android:textSize="20dp"
                             android:textAlignment="center"
                             android:textColor="@color/colorDark"
@@ -172,7 +169,6 @@
             android:maxLines="1"
             android:ellipsize="end"
             android:textColor="@color/colorDark"
-            android:text="yudaidang"
             android:textSize="18dp"
             android:textStyle="bold"/>
         <TextView
@@ -183,8 +179,7 @@
             android:textColor="@color/colorDark"
             android:maxLines="4"
             android:ellipsize="end"
-            android:textSize="@dimen/medium_text"
-            android:text="Hello world. I'm a Vietnamese girl.\nI'm studying IT. Love pop music and Korean drama so much "/>
+            android:textSize="@dimen/medium_text" />
     </LinearLayout>
 
 </LinearLayout>

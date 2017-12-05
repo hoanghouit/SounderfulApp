@@ -3,7 +3,9 @@ package com.example.htk.designtemplate.Activity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -81,7 +83,8 @@ public class NewPostActivity extends AppCompatActivity {
         // set context for toast
         MultipleToast.context = this;
         // set user name
-        userName = MainActivity.userName;
+        SharedPreferences sharedPreferences= getSharedPreferences("user", Context.MODE_PRIVATE);
+        userName = sharedPreferences.getString("userName","");
         // set retrofit accountGlobal service;
         accountService = ApiUtils.getAccountService();
         postService = ApiUtils.getPostService();
@@ -107,6 +110,11 @@ public class NewPostActivity extends AppCompatActivity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
         timeTextView.setText(simpleDateFormat.format(c.getTime()));
 
+        //set user name
+        userNameTextView = (TextView) findViewById(R.id.userName_newPost);
+        avatarImage = (ImageView) findViewById(R.id.avatarImage_newPost);
+
+        userNameTextView.setText(userName);
         // set user infor
         loadUserInfo();
 
@@ -222,10 +230,8 @@ public class NewPostActivity extends AppCompatActivity {
     }
 
     public void setUserInfo(Account account) {
-        userNameTextView = (TextView) findViewById(R.id.userName_newPost);
         avatarImage = (ImageView) findViewById(R.id.avatarImage_newPost);
 
-        userNameTextView.setText(MainActivity.userName);
         // Set avatar image
         String url = ApiUtils.getImageUrl(account.getUrlAvatar());
         Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(500, 500).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatarImage);

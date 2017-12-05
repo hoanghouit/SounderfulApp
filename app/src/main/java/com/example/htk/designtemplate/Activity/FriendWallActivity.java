@@ -211,6 +211,7 @@ public class FriendWallActivity extends AppCompatActivity {
                     Log.d(tag, ((Integer)statusCode).toString());
                     // handle request errors depending on status code
                 }
+                postArrayAdapter.clear();
                 postArrayAdapter.addAll(postList);
             }
             @Override

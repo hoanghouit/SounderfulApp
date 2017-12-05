@@ -6,21 +6,21 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 
 /**
- * Created by HTK on 11/18/2017.
+ * Created by HTK on 12/6/2017.
  */
 
-public class Comment {
+public class CommentModel {
     @SerializedName("id")
     @Expose
     private int id;
 
     @SerializedName("userName")
     @Expose
-    private Account account;
+    private String userName;
 
     @SerializedName("postId")
     @Expose
-    private Post post;
+    private int postId;
 
     @SerializedName("context")
     @Expose
@@ -38,20 +38,20 @@ public class Comment {
         this.id = id;
     }
 
-    public Account getAccount() {
-        return account;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public Post getPost() {
-        return post;
+    public int getPostId() {
+        return postId;
     }
 
-    public void setPost(Post post) {
-        this.post = post;
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
     public String getContent() {

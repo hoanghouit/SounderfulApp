@@ -4,13 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.htk.designtemplate.Activity.AccountSearch_Fragment">
-
-    <TextView
-        android:id="@+id/recentlySearchTextView_AccountSearchFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Gần đây"
-        android:layout_margin="@dimen/small_margin"/>
     <ListView
         android:id="@+id/listView_accountSearchActivity"
         android:layout_width="match_parent"

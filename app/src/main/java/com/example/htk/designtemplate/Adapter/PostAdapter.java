@@ -56,8 +56,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
     private String currentUser;
     private List<Integer> likedPostIds = null;
     private PostService postService = ApiUtils.getPostService();
-    //private ImageView likeIcon;
-    //private TextView likeNumber;
+
     public PostAdapter(Activity context, int layoutID, List<Post> objects) {
         super(context, layoutID, objects);
         this.context = context;
@@ -197,6 +196,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, CommentActivity.class);
+                intent.putExtra("postId", post.getPostId());
                 context.startActivity(intent);
             }
         });

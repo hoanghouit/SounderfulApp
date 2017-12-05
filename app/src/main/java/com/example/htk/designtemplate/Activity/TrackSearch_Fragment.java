@@ -59,7 +59,7 @@ public class TrackSearch_Fragment extends Fragment {
         mService = ApiUtils.getPostService();
         recentlySearch();
         // set context for toasts
-        MultipleToast.context = getActivity();
+        MultipleToast.context = getContext();
 
     }
     public void searchPosts(String key){

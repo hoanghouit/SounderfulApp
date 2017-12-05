@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.htk.designtemplate.Adapter.AccountSearchAdapter;
 import com.example.htk.designtemplate.Model.Account;
@@ -30,7 +29,6 @@ import retrofit2.Response;
 public class AccountSearch_Fragment extends Fragment {
     private final static String tag = "AccountSearchFragment";
     private ListView listViewAccount;
-    private TextView recentlySearch;
     private AccountSearchAdapter accountSearchAdapter;
     private AccountService mService;
     private EditText searchEditText;
@@ -54,8 +52,6 @@ public class AccountSearch_Fragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-        // set recentlySearch text view
-        recentlySearch = (TextView) getView().findViewById(R.id.recentlySearchTextView_AccountSearchFragment);
         // set adaper for list view
         listViewAccount = (ListView) getView().findViewById(R.id.listView_accountSearchActivity);
         accountSearchAdapter = new AccountSearchAdapter(getActivity(),R.layout.item_account_search_listview,accountArrayList);
@@ -64,7 +60,7 @@ public class AccountSearch_Fragment extends Fragment {
         mService = ApiUtils.getAccountService();
         recentlySearch();
         // set context for toasts
-        MultipleToast.context = getActivity();
+        MultipleToast.context = getContext();
     }
 
     public void searchAccounts(String key){
@@ -79,7 +75,6 @@ public class AccountSearch_Fragment extends Fragment {
                         accountArrayList.add(account);
                     }
                     accountSearchAdapter.notifyDataSetChanged();
-                    recentlySearch.setVisibility(View.GONE);
                     Log.d(tag, "search accounts from API");
                 }else {
                     int statusCode  = response.code();
@@ -101,6 +96,5 @@ public class AccountSearch_Fragment extends Fragment {
         SharedPreferences sharedPreferences= getActivity().getSharedPreferences("searchActivity", Context.MODE_PRIVATE);
         String recentlyKeySearch = sharedPreferences.getString("keySearch","");
         searchAccounts(recentlyKeySearch);
-        recentlySearch.setVisibility(View.VISIBLE);
     }
 }

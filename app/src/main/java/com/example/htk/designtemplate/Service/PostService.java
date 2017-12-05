@@ -1,5 +1,7 @@
 package com.example.htk.designtemplate.Service;
 
+import com.example.htk.designtemplate.Model.Comment;
+import com.example.htk.designtemplate.Model.CommentModel;
 import com.example.htk.designtemplate.Model.LikeModel;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.Model.PostModel;
@@ -65,5 +67,13 @@ public interface PostService {
     @FormUrlEncoded
     @POST("likes/delete/")
     Call<ResponseBody> deleteLike(@Field("username") String userName, @Field("postid") String postId);
+
+    @GET("comments/{postid}/")
+    Call<List<Comment>> getCommentsOfPost(@Path("postid") int postId);
+
+    @FormUrlEncoded
+    @POST("api/comments/")
+    Call<CommentModel> createComment(@Field("userName") String userName, @Field("postId") int postId, @Field("context") String content);
+
 
 }

@@ -95,17 +95,17 @@ public class MainActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()) {
                     getLikedPosts(response.body());
-                    Log.d("MainActivity", "posts loaded from API");
+                    Log.d(TAG, "posts loaded from API");
                 }else {
                     int statusCode  = response.code();
-                    Log.d("MainActivity", "fail loaded from API");
-                    Log.d("MainActivity", ((Integer)statusCode).toString());
+                    Log.d(TAG, "fail loaded from API");
+                    Log.d(TAG, ((Integer)statusCode).toString());
                     MultipleToast.showToast(fail_request);
                 }
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("MainActivity","fail");
+                Log.d(TAG,"fail");
                 progressDialog.dismiss();
                 MultipleToast.showToast(fail_request);
             }
@@ -127,11 +127,11 @@ public class MainActivity extends AppCompatActivity {
                         arr.add( p.getPostId());
                     }
                     postArrayAdapter.setLikedPostIds(arr);
-                    Log.d("MainActivity", "posts loaded from API");
+                    Log.d(TAG, "posts loaded from API");
                 }else {
                     int statusCode  = response.code();
-                    Log.d("MainActivity", "fail loaded from API");
-                    Log.d("MainActivity", ((Integer)statusCode).toString());
+                    Log.d(TAG, "fail loaded from API");
+                    Log.d(TAG, ((Integer)statusCode).toString());
                     MultipleToast.showToast(fail_request);
                 }
                 postArrayAdapter.clear();
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("MainActivity","fail");
+                Log.d(TAG,"fail");
                 progressDialog.dismiss();
                 MultipleToast.showToast(fail_request);
             }

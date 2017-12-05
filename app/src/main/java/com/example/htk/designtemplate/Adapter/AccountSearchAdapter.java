@@ -45,7 +45,6 @@ public class AccountSearchAdapter extends ArrayAdapter<Account> {
         TextView biography = (TextView) convertView.findViewById(R.id.biographyTextView_accountSearch);
         ImageView avatar = (ImageView) convertView.findViewById(R.id.avatarImage_accountSearch);
 
-
         // Set username
         userName.setText(account.getUserName());
         // Set biography

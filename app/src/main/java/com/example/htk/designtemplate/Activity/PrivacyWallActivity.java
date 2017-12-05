@@ -104,6 +104,10 @@ public class PrivacyWallActivity extends AppCompatActivity {
             }
         });
 
+        // set user name
+        userNameTextView = (TextView) findViewById(R.id.usernameTextViewPrivacyWall);
+        userNameTextView.setText(userName);
+
 
         //setupBottomNavigationView
         BottomNavigationViewHelper.setupBottomNavigationView(this,ACTIVITY_NUM);
@@ -144,7 +148,6 @@ public class PrivacyWallActivity extends AppCompatActivity {
         });
     }
     public void setUserInfo(Account account){
-        userNameTextView = (TextView) findViewById(R.id.usernameTextViewPrivacyWall);
         biographyTextView = (TextView) findViewById(R.id.biographyTextView);
         avatar = (ImageView) findViewById(R.id.avatarImagePrivacyWall);
         background = (ImageView) findViewById(R.id.backGroundImage);
@@ -152,7 +155,6 @@ public class PrivacyWallActivity extends AppCompatActivity {
         followerTextView = (TextView) findViewById(R.id.followerNumberTextView);
         followingTextView = (TextView) findViewById(R.id.followingNumberTextView);
 
-        userNameTextView.setText(MainActivity.userName);
         biographyTextView.setText(account.getBiography());
         // Set avatar image
         String url= ApiUtils.getImageUrl(account.getUrlAvatar());
@@ -204,6 +206,7 @@ public class PrivacyWallActivity extends AppCompatActivity {
                     Log.d(tag, ((Integer)statusCode).toString());
                     MultipleToast.showToast(MainActivity.fail_request);
                 }
+                postArrayAdapter.clear();
                 postArrayAdapter.addAll(postList);
             }
             @Override
