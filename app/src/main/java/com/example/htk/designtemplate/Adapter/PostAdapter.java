@@ -1,9 +1,12 @@
 package com.example.htk.designtemplate.Adapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -28,6 +31,7 @@ import com.example.htk.designtemplate.Activity.PrivacyWallActivity;
 import com.example.htk.designtemplate.Activity.SearchActivity;
 import com.example.htk.designtemplate.Model.LikeModel;
 import com.example.htk.designtemplate.Model.Post;
+import com.example.htk.designtemplate.Model.PostModel;
 import com.example.htk.designtemplate.R;
 import com.example.htk.designtemplate.Service.ApiUtils;
 import com.example.htk.designtemplate.Service.PostService;
@@ -47,6 +51,7 @@ import retrofit2.Response;
  */
 
 public class PostAdapter extends ArrayAdapter<Post> {
+    private final static String tag = "PostAdapter";
     private Activity context;
     private String currentUser;
     private List<Integer> likedPostIds = null;
@@ -82,17 +87,20 @@ public class PostAdapter extends ArrayAdapter<Post> {
         final TextView description = (TextView) convertView.findViewById(R.id.descriptionTextView);
         final TextView likeNumber = (TextView) convertView.findViewById(R.id.likeNumberTextView);
         TextView commentNumber = (TextView) convertView.findViewById(R.id.commentNumberTextView);
-        TextView listenNumber = (TextView) convertView.findViewById(R.id.listenNumberTextView);
+        final TextView listenNumber = (TextView) convertView.findViewById(R.id.listenNumberTextView);
         ImageView avatar = (ImageView) convertView.findViewById(R.id.avatarImageView);
         ImageView imageTrack = (ImageView) convertView.findViewById(R.id.imageView);
-        ImageView playMusic = (ImageView) convertView.findViewById(R.id.playMusic);
+        ImageView playMusic = (ImageView) convertView.findViewById(R.id.playTrackIconImage);
         final ImageView menu = (ImageView) convertView.findViewById(R.id.menuImage);
         ImageView commentIcon = (ImageView) convertView.findViewById(R.id.commentIconImage);
         final ImageView likeIcon = (ImageView) convertView.findViewById(R.id.likeIconImage);
         SeekBar seekBar = (SeekBar) convertView.findViewById(R.id.trackTimeSeekBar);
         final TextView readMore = (TextView) convertView.findViewById(R.id.readMoreTextView);
+        TextView txtDuration = (TextView) convertView.findViewById(R.id.totalTrackTimeTextView);
+        TextView txtCurrentTime =(TextView) convertView.findViewById(R.id.currentTimeTextView);
         final boolean[] liked = new boolean[1];
-
+        /*MyMediaPlayer myMediaPlayer = new MyMediaPlayer(playMusic, txtDuration, seekBar,txtCurrentTime, ApiUtils.getTrackUrl(post.getUrlTrack()));
+        myMediaPlayer.createMediaPlayer();*/
         // set seek bar width full parent
         seekBar.setPadding(0,0,0,0);
 
@@ -115,7 +123,8 @@ public class PostAdapter extends ArrayAdapter<Post> {
         playMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                playMusic(post);
+                playMusic(post, liked[0]);
+                listenNumber.setText(getNumber(post.getListenNumber())+" lượt nghe");
             }
         });
 
@@ -125,7 +134,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
             public void onClick(View view) {
                 // if this is post of current user
                 if(post.getAccount().getUserName().equals(currentUser)) {
-                    showMenu(menu);
+                    showMenu(menu, post);
                 }
                 // if this is not post of current user, do nothing
             }
@@ -170,7 +179,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         }
 
         // Set listen number
-       listenNumber.setText(getNumber(post.getListenNumber()));
+       listenNumber.setText(getNumber(post.getListenNumber())+" lượt nghe");
 
         // Set like number
         likeNumber.setText(getNumber(post.getLikeNumber()));
@@ -220,9 +229,17 @@ public class PostAdapter extends ArrayAdapter<Post> {
             }
         });
 
+       /* playMusic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myMediaPlayer.playMusic();
+            }
+        });
+*/
+
         return convertView;
     }
-    public void showMenu (View view)
+    public void showMenu (View view, final Post post)
     {
             PopupMenu menu = new PopupMenu (context, view);
             menu.setOnMenuItemClickListener (new PopupMenu.OnMenuItemClickListener ()
@@ -234,7 +251,25 @@ public class PostAdapter extends ArrayAdapter<Post> {
                     switch (id)
                     {
                         case R.id.item_edit: Toast.makeText(context,"sửa",Toast.LENGTH_LONG).show(); break;
-                        case R.id.item_delete: Toast.makeText(context,"xóa",Toast.LENGTH_LONG).show(); break;
+                        case R.id.item_delete: {
+                            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                            dialogBuilder.setMessage("Bạn có chắc chắc muốn xóa?");
+                            dialogBuilder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    deletePost(post);
+                                }
+                            });
+                            dialogBuilder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            });
+                            AlertDialog alertDialog = dialogBuilder.create();
+                            alertDialog.show();
+                            break;
+                        }
                     }
                     return true;
                 }
@@ -270,10 +305,22 @@ public class PostAdapter extends ArrayAdapter<Post> {
         context.startActivity(intent);
     }
 
-    public void playMusic(Post post){
+    public void playMusic(Post post, boolean liked){
         Intent intent;
         intent = new Intent(context, MusicPlayer.class);
-        intent.putExtra("titlePost", post.getTitle());
+        Bundle bundle = new Bundle();
+        bundle.putString("urlImage",post.getUrlImage());
+        bundle.putString("urlTrack",post.getUrlTrack());
+        bundle.putString("title",post.getTitle());
+        bundle.putInt("postId",post.getPostId());
+        bundle.putBoolean("liked",liked);
+        intent.putExtras(bundle);
+        // increase Listennumber
+        PostModel postModel = new PostModel();
+        getPostModel(postModel, post);
+        post.setListenNumber(post.getListenNumber()+1);
+        postModel.setListenNumber(postModel.getListenNumber()+1);
+        increaseListenNumber(postModel);
         context.startActivity(intent);
     }
 
@@ -305,19 +352,19 @@ public class PostAdapter extends ArrayAdapter<Post> {
             public void onResponse(Call<LikeModel> call, Response<LikeModel> response) {
                 if(response.isSuccessful()) {
                     likedPostIds.add(postId);
-                    Log.d("PostAdapter", "create like from API");
+                    Log.d(tag, "create like from API");
                 }else {
                     MultipleToast.showToast("Yêu thích không thành công");
                     int statusCode  = response.code();
-                    Log.d("PostAdapter", "fail create like from API");
-                    Log.d("PostAdapter", ((Integer)statusCode).toString());
+                    Log.d(tag, "fail create like from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
                     // handle request errors depending on status code
                 }
             }
             @Override
             public void onFailure(Call<LikeModel> call, Throwable t) {
                 MultipleToast.showToast("Yêu thích không thành công");
-                Log.d("PostAdapter", "fail");
+                Log.d(tag, "fail");
             }
         });
     }
@@ -328,20 +375,76 @@ public class PostAdapter extends ArrayAdapter<Post> {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
                     likedPostIds.remove((Integer)postId);
-                    Log.d("PostAdapter", "delete like from API");
+                    Log.d(tag, "delete like from API");
                 }else {
                     MultipleToast.showToast("Hủy yêu thích không thành công");
                     int statusCode  = response.code();
-                    Log.d("PostAdapter", "delete create like from API");
-                    Log.d("PostAdapter", ((Integer)statusCode).toString());
+                    Log.d(tag, "delete create like from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
                     // handle request errors depending on status code
                 }
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 MultipleToast.showToast("Hủy yêu thích không thành công");
+                Log.d(tag, "fail");
+            }
+        });
+    }
+    public void increaseListenNumber(final PostModel postModel){
+        postService.updatePost(postModel.getPostId(),postModel).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()) {
+                    Log.d(tag, "increase listen number from API");
+                }else {
+                    int statusCode  = response.code();
+                    Log.d(tag, "fail increase listen number from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
+                    // handle request errors depending on status code
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                //MultipleToast.showToast(failSignupToast);
                 Log.d("PostAdapter", "fail");
             }
         });
     }
+    public PostModel getPostModel(PostModel postModel, Post post){
+        postModel.setPostId(post.getPostId());
+        postModel.setUrlTrack(post.getUrlTrack());
+        postModel.setUrlImage(post.getUrlImage());
+        postModel.setDateTime(post.getDateTime());
+        postModel.setDescription(post.getDescription());
+        postModel.setTitle(post.getTitle());
+        postModel.setUserName(post.getAccount().getUserName());
+        postModel.setListenNumber(post.getListenNumber());
+        return postModel;
+    }
+
+    public void deletePost(final Post post){
+        postService.deletePost(post.getPostId()).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()) {
+                    MultipleToast.showToast("Xóa bài đăng thành công");
+                    remove(post);
+                    Log.d(tag, "delete post from API");
+                }else {
+                    MultipleToast.showToast("Xóa bài đăng không thành công");
+                    int statusCode  = response.code();
+                    Log.d(tag, "fail delete post from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
+                    // handle request errors depending on status code
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                MultipleToast.showToast("Xóa bài đăng không thành công");
+                Log.d(tag, "fail");
+            }
+        });
+    }
+
 }

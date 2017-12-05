@@ -15,6 +15,7 @@ import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
 import com.example.htk.designtemplate.Service.ApiUtils;
 import com.example.htk.designtemplate.Service.PostService;
+import com.example.htk.designtemplate.Utils.MultipleToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TrackSearch_Fragment extends Fragment {
+    private final static String tag = "TrackSearchFragment";
     private PostService mService;
     private ListView listViewTrack;
+    private String currentUser = MainActivity.userName;
     private TrackSearchAdapter trackSearchAdapter;
     private ArrayList<Post> postArrayList= new ArrayList<Post>();
     public TrackSearch_Fragment() {
@@ -55,6 +58,8 @@ public class TrackSearch_Fragment extends Fragment {
         // set retrofit accont service
         mService = ApiUtils.getPostService();
         recentlySearch();
+        // set context for toasts
+        MultipleToast.context = getActivity();
 
     }
     public void searchPosts(String key){
@@ -63,23 +68,51 @@ public class TrackSearch_Fragment extends Fragment {
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
 
                 if(response.isSuccessful()) {
-                    //itemArrayList = new ArrayList<Item>(response.body().getItems());
-                    postArrayList.clear();
-                    for (Post post:response.body()){
-                        postArrayList.add(post);
-                    }
-                    trackSearchAdapter.notifyDataSetChanged();
-                    Log.d("PostSearchFragment", "posts loaded from API");
+                  getLikedPosts(response.body());
+
+                    Log.d(tag, "search posts from API");
                 }else {
                     int statusCode  = response.code();
-                    Log.d("PostSearchFragment", "fail loaded from API");
-                    Log.d("PostSearchFragment", ((Integer)statusCode).toString());
+                    Log.d(tag, "fail search posts from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
+                    MultipleToast.showToast(MainActivity.fail_request);
                     // handle request errors depending on status code
                 }
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("PostSearchFragment", "fail");
+                Log.d(tag, "fail"); MultipleToast.showToast(MainActivity.fail_request);
+            }
+        });
+    }
+    public void getLikedPosts(final List<Post> postList){
+        mService.getLikedPosts(currentUser).enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                if(response.isSuccessful()) {
+                    ArrayList<Integer> arr = new ArrayList<Integer>();
+                    for(Post p: response.body()){
+                        arr.add( p.getPostId());
+                    }
+                    trackSearchAdapter.setLikedPostIds(arr);
+                    Log.d(tag, "get liked posts from API");
+                }else {
+                    int statusCode  = response.code();
+                    Log.d(tag, "fail get liked from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
+                    MultipleToast.showToast(MainActivity.fail_request);
+                    // handle request errors depending on status code
+                }
+                postArrayList.clear();
+                for (Post post:postList){
+                    postArrayList.add(post);
+                }
+                trackSearchAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+                Log.d(tag,"fail");
+                MultipleToast.showToast(MainActivity.fail_request);
             }
         });
     }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.htk.designtemplate.Activity.FriendWallActivity;
 import com.example.htk.designtemplate.Model.Account;
@@ -52,13 +53,14 @@ public class AccountSearchAdapter extends ArrayAdapter<Account> {
 
         // Set avater image
         String url= ApiUtils.getImageUrl(account.getUrlAvatar());
-        Glide.with(context).load(url).apply(RequestOptions.circleCropTransform().placeholder(R.mipmap.ic_launcher_round)).into(avatar);
+        Glide.with(context).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(200,200).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
 
         // set action for clicking view
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, FriendWallActivity.class);
+                intent.putExtra("userName",account.getUserName());
                 context.startActivity(intent);
             }
         });

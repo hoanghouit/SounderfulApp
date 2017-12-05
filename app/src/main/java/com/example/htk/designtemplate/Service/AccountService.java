@@ -2,9 +2,11 @@ package com.example.htk.designtemplate.Service;
 
 import com.example.htk.designtemplate.Activity.SignUpActivity;
 import com.example.htk.designtemplate.Model.Account;
+import com.example.htk.designtemplate.Model.FollowingModel;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -33,4 +35,15 @@ public interface AccountService {
     @FormUrlEncoded
     @POST("accounts/checklogin/")
     Call<SignUpActivity.existsUser> login(@Field("userName") String userName, @Field("password") String password);
+
+    @GET("accounts/checkfollow/{userNameA}/follow/{userNameB}")
+    Call<SignUpActivity.existsUser> checkFollow(@Path("userNameA") String userNameA, @Path("userNameB") String userNameB);
+
+    @FormUrlEncoded
+    @POST("api/followings/")
+    Call<FollowingModel> createFollow(@Field("userNameA") String userNameA, @Field("userNameB") String userNameB);
+
+    @FormUrlEncoded
+    @POST("accounts/follow/delete/")
+    Call<ResponseBody> deleteFollow(@Field("usernameA") String userNameA, @Field("usernameB") String userNameB);
 }

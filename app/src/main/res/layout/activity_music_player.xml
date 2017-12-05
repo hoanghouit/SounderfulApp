@@ -1,42 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="60dp"
         android:background="@color/colorWhite"
         android:elevation="3dp"
-        android:paddingRight="@dimen/small_margin">
-        <LinearLayout
+        android:paddingRight="@dimen/small_margin"
+        app:contentInsetStart="0dp"
+        app:contentInsetLeft="0dp">
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginRight="@dimen/medium_margin">
             <ImageView
                 android:id="@+id/backImage_playMusicActivity"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_back"
-                android:layout_centerVertical="true"
-                android:layout_weight="1"/>
+                android:layout_centerVertical="true"/>
 
             <TextView
                 android:id="@+id/titleSong"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
+                android:layout_toRightOf="@+id/backImage_playMusicActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:ellipsize="end"
-                android:gravity="bottom"
                 android:maxLines="2"
+                android:gravity="center_vertical"
                 android:paddingTop="@dimen/extra_small_margin"
-                android:paddingLeft="@dimen/small_margin"
+                android:paddingLeft="@dimen/medium_margin"
                 android:layout_marginBottom="@dimen/extra_small_margin"
-                android:text="THisss"
+                android:text="This's a title song - artist"
                 android:textColor="@color/colorDark"
                 android:textSize="@dimen/medium_text"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
 
@@ -108,11 +114,11 @@
 
             <ImageView
                 android:id="@+id/imgLike"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:src="@drawable/ic_heart" />
+                android:src="@drawable/ic_like_gray" />
 
             <ImageView
                 android:id="@+id/imgPlay"
@@ -124,11 +130,11 @@
 
             <ImageView
                 android:id="@+id/imgReplay"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:src="@drawable/ic_replay_song" />
+                android:src="@drawable/ic_replay" />
         </LinearLayout>
 
     </LinearLayout>

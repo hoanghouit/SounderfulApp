@@ -1,13 +1,18 @@
 package com.example.htk.designtemplate.Activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -41,6 +47,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class NewPostActivity extends AppCompatActivity {
+    private static final String tag ="NewPostActivity";
     private ImageView backButton;
     private String userName;
     private AccountService accountService;
@@ -154,6 +161,8 @@ public class NewPostActivity extends AppCompatActivity {
                 createPost(title,description);
             }
         });
+        initPermission();
+
     }
 
     @Override
@@ -194,18 +203,20 @@ public class NewPostActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     setUserInfo(response.body());
-                    Log.d("NewPostActivity", "posts loaded from API");
+                    Log.d(tag, "get uer info from API");
                 } else {
                     int statusCode = response.code();
-                    Log.d("NewPostActivity", "fail loaded from API");
-                    Log.d("NewPostActivity", ((Integer) statusCode).toString());
+                    Log.d(tag, "fail get user info from API");
+                    Log.d(tag, ((Integer) statusCode).toString());
+                    MultipleToast.showToast(MainActivity.fail_request);
                     // handle request errors depending on status code
                 }
             }
 
             @Override
             public void onFailure(Call<Account> call, Throwable t) {
-                Log.d("NewPostActivity", "fail");
+                Log.d(tag, "fail get user info");
+                MultipleToast.showToast(MainActivity.fail_request);
             }
         });
     }
@@ -241,16 +252,19 @@ public class NewPostActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call,
                                    Response<ResponseBody> response) {
                 if(response.isSuccessful()){
-                    Log.v("UploadImage", "success");
+                    Log.v(tag, "success");
                 }
                 else {
-                    Log.v("UploadImage", "fail");
+                    Log.v(tag, "fail upload image");
+                    MultipleToast.showToast(MainActivity.fail_request);
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("Upload image error:", "fail");
+                Log.e(tag, "fail upload image error");
+                Log.e(tag, t.getMessage());
+                MultipleToast.showToast(MainActivity.fail_request);
             }
         });
     }
@@ -277,18 +291,19 @@ public class NewPostActivity extends AppCompatActivity {
                                    Response<ResponseBody> response) {
                 if(response.isSuccessful()){
                     completePost(postModel);
-                    Log.v("UploadTrack", "success");
+                    Log.v(tag, "success upload track");
                 }
                 else {
                     deletePost(postModel);
                     MultipleToast.showToast(fail_upload);
-                    Log.v("UploadTrack", "fail");
+                    Log.v(tag, "fail upload track");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("Upload track error:", t.getMessage());
+                Log.e(tag, "upload track error");
+                Log.e(tag, t.getMessage());
             }
         });
     }
@@ -298,25 +313,24 @@ public class NewPostActivity extends AppCompatActivity {
             public void onResponse(Call<PostModel> call, Response<PostModel> response) {
                 if(response.isSuccessful()) {
                     updatePost(response.body());
-                    Log.d("NewPostActivity", "create post from API");
+                    Log.d(tag, "create post from API");
                 }else {
-                   // MultipleToast.showToast(failSignupToast);
                     int statusCode  = response.code();
-                    Log.d("NewPostActivity", "fail create post from API");
-                    Log.d("NewPostActivity", ((Integer)statusCode).toString());
-                    // handle request errors depending on status code
+                    Log.d(tag, "fail create post from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
+                    MultipleToast.showToast(MainActivity.fail_request);
                 }
             }
             @Override
             public void onFailure(Call<PostModel> call, Throwable t) {
-                //MultipleToast.showToast(failSignupToast);
-                Log.d("NewPostActivity", "fail");
+                Log.d(tag, "fail create post");
+                MultipleToast.showToast(MainActivity.fail_request);
             }
         });
     }
     public void updatePost(PostModel post){
         createProgressDialog();
-        progressDialog.show();
+       // progressDialog.show();
         String id = Integer.toString(post.getPostId());
         String imageName= null;
         if(imageUriGlobal != null) {
@@ -333,24 +347,24 @@ public class NewPostActivity extends AppCompatActivity {
         return android.webkit.MimeTypeMap.getFileExtensionFromUrl(file.getName());
     }
     public void completePost(final PostModel postModel){
-        postService.completePost(postModel.getPostId(),postModel).enqueue(new Callback<ResponseBody>() {
+        postService.updatePost(postModel.getPostId(),postModel).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
                     startIntent();
-                    Log.d("NewPostActivity", "complete post from API");
+                    Log.d(tag, "complete post from API");
                 }else {
                     MultipleToast.showToast("Đăng tải không thành công");
                     int statusCode  = response.code();
-                    Log.d("NewPostActivity", "fail complete post from API");
-                    Log.d("NewPostActivity", ((Integer)statusCode).toString());
-                    // handle request errors depending on status code
+                    Log.d(tag, "fail complete post from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
+                    MultipleToast.showToast(MainActivity.fail_request);
                 }
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                //MultipleToast.showToast(failSignupToast);
-                Log.d("NewPostActivity", "fail");
+                MultipleToast.showToast(MainActivity.fail_request);
+                Log.d(tag, "fail complete post");
             }
         });
     }
@@ -359,19 +373,19 @@ public class NewPostActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
-                    Log.d("NewPostActivity", "delete post from API");
+                    Log.d(tag, "delete post from API");
                 }else {
                     // MultipleToast.showToast(failSignupToast);
                     int statusCode  = response.code();
-                    Log.d("NewPostActivity", "fail delete post from API");
-                    Log.d("NewPostActivity", ((Integer)statusCode).toString());
-                    // handle request errors depending on status code
+                    Log.d(tag, "fail delete post from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
+                    MultipleToast.showToast(MainActivity.fail_request);
                 }
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                //MultipleToast.showToast(failSignupToast);
-                Log.d("NewPostActivity", "fail");
+                MultipleToast.showToast(MainActivity.fail_request);
+                Log.d(tag, "fail delete post");
             }
         });
     }
@@ -382,11 +396,64 @@ public class NewPostActivity extends AppCompatActivity {
         progressDialog.setProgress(0);
     }
     public void startIntent(){
-        progressDialog.dismiss();
+        //progressDialog.dismiss();
         MultipleToast.showToast(successful_upload);
         Intent intent = new Intent(context,MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+    public boolean checkPermissions(String permission){
+        Log.d(tag, "checkPermissions: checking permission: " + permission);
+
+        int permissionRequest = ActivityCompat.checkSelfPermission(NewPostActivity.this, permission);
+
+        if(permissionRequest != PackageManager.PERMISSION_GRANTED){
+            Log.d(tag, "checkPermissions: \n Permission was not granted for: " + permission);
+            return false;
+        }
+        else{
+            Log.d(tag, "checkPermissions: \n Permission was granted for: " + permission);
+            return true;
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1) {
+            if (grantResults.length == 1 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(NewPostActivity.this, "Permision Write File is Granted", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(NewPostActivity.this, "Permision Write File is Denied", Toast.LENGTH_SHORT).show();
+
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    public void initPermission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                //Permisson don't granted
+                if (shouldShowRequestPermissionRationale(
+                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    Toast.makeText(NewPostActivity.this, "Permission isn't granted ", Toast.LENGTH_SHORT).show();
+                }
+                // Permisson don't granted and dont show dialog again.
+                else {
+                    Toast.makeText(NewPostActivity.this, "Permisson don't granted and dont show dialog again ", Toast.LENGTH_SHORT).show();
+                }
+                //Register permission
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+            }
+        }
+    }
+
+
+
+
+
 }

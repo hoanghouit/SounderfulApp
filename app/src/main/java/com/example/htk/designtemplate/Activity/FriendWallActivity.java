@@ -17,22 +17,26 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.htk.designtemplate.Adapter.PostAdapter;
 import com.example.htk.designtemplate.Model.Account;
+import com.example.htk.designtemplate.Model.FollowingModel;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.R;
 import com.example.htk.designtemplate.Service.AccountService;
 import com.example.htk.designtemplate.Service.ApiUtils;
 import com.example.htk.designtemplate.Service.PostService;
 import com.example.htk.designtemplate.Utils.BottomNavigationViewHelper;
+import com.example.htk.designtemplate.Utils.MultipleToast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FriendWallActivity extends AppCompatActivity {
 
+    private final static String tag = "FriendWallActivity";
     private ArrayList<Post> postArray = new ArrayList<Post>() ;
     private PostAdapter postArrayAdapter;
     private ListView listView;
@@ -45,6 +49,7 @@ public class FriendWallActivity extends AppCompatActivity {
     private PostService mService;
     private String currentUser = MainActivity.userName;
     private ArrayList<Integer> likedPostIds;
+    private boolean following = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,22 +91,20 @@ public class FriendWallActivity extends AppCompatActivity {
         });
         //set action for follow button
         followButton = (Button) findViewById(R.id.followButton_friendwall);
+        checkFollow();
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(followButton.getText()==getString(R.string.following)){
-                    followButton.setBackgroundResource(R.color.colorWhite);
-                    followButton.setTextColor(getResources().getColor(R.color.colorDark));
-                    followButton.setText(R.string.follow);
+                if(following){
+                   deleteFollow();
                 }
                 else
                 {
-                    followButton.setBackgroundResource(R.color.colorBlue);
-                    followButton.setTextColor(getResources().getColor(R.color.colorWhite));
-                    followButton.setText(R.string.following);
+                    createFollow();
                 }
             }
         });
+        MultipleToast.context = this;
 
         //setupBottomNavigationView
         int ACTIVITY_NUM = intent.getIntExtra("indexActivity",1);
@@ -112,6 +115,16 @@ public class FriendWallActivity extends AppCompatActivity {
         super.onRestart();
         loadPost();
     }
+    public void unfollowUI(){
+        followButton.setBackgroundResource(R.color.colorWhite);
+        followButton.setTextColor(getResources().getColor(R.color.colorDark));
+        followButton.setText(R.string.follow);
+    }
+    public void followUI(){
+        followButton.setBackgroundResource(R.color.colorBlue);
+        followButton.setTextColor(getResources().getColor(R.color.colorWhite));
+        followButton.setText(R.string.following);
+    }
 
     public void loadUserInfo(){
         accountService.getAccountDetail(userNameGlobal).enqueue(new Callback<Account>() {
@@ -120,17 +133,19 @@ public class FriendWallActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()) {
                     setUserInfo(response.body());
-                    Log.d("FriendWallActivity", "posts loaded from API");
+                    Log.d(tag, "user detail loaded from API");
                 }else {
                     int statusCode  = response.code();
-                    Log.d("FriendWallActivity", "fail loaded from API");
-                    Log.d("FriendWallActivity", ((Integer)statusCode).toString());
+                    Log.d(tag, "fail load user detail from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
+                    MultipleToast.showToast(MainActivity.fail_request);
                     // handle request errors depending on status code
                 }
             }
             @Override
             public void onFailure(Call<Account> call, Throwable t) {
-                Log.d("FriendWallActivity", t.getMessage());
+                Log.d(tag, "fail load user detail");
+                MultipleToast.showToast(MainActivity.fail_request);
             }
         });
     }
@@ -165,17 +180,17 @@ public class FriendWallActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()) {
                     getLikedPosts(response.body());
-                    Log.d("FriendWallActivity", "posts loaded from API");
+                    Log.d(tag, "posts loaded from API");
                 }else {
                     int statusCode  = response.code();
-                    Log.d("FriendWallActivity", "fail loaded from API");
-                    Log.d("FriendWallActivity", ((Integer)statusCode).toString());
+                    Log.d(tag, "fail loaded from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
                     // handle request errors depending on status code
                 }
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("FriendWallActivity", "fail");
+                Log.d(tag, "fail");
             }
         });
     }
@@ -189,21 +204,88 @@ public class FriendWallActivity extends AppCompatActivity {
                         arr.add( p.getPostId());
                     }
                     postArrayAdapter.setLikedPostIds(arr);
-                    Log.d("MainActivity", "posts loaded from API");
+                    Log.d(tag, "liked posts loaded from API");
                 }else {
                     int statusCode  = response.code();
-                    Log.d("MainActivity", "fail loaded from API");
-                    Log.d("MainActivity", ((Integer)statusCode).toString());
+                    Log.d(tag, "fail loaded liked post from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
                     // handle request errors depending on status code
                 }
                 postArrayAdapter.addAll(postList);
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("MainActivity","fail");
+                Log.d(tag,"fail loaded liked post");
             }
         });
     }
+    public void checkFollow(){
+        accountService.checkFollow(currentUser,userNameGlobal).enqueue(new Callback<SignUpActivity.existsUser>() {
+            @Override
+            public void onResponse(Call<SignUpActivity.existsUser> call, Response<SignUpActivity.existsUser> response) {
+                if(response.isSuccessful()) {
+                    if(response.body().exists.equals("0")) {
+                        following = false;
+                        unfollowUI();
+                    }
+                    else{
+                        following = true;
+                        followUI();
+                    }
+                    Log.d(tag, "check follow from API");
+                }else {
+                    int statusCode  = response.code();
+                    Log.d(tag, "fail check follow from API");
+                    // handle request errors depending on status code
+                }
+            }
+            @Override
+            public void onFailure(Call<SignUpActivity.existsUser> call, Throwable t) {
+                Log.d(tag, "fail");
+            }
+        });
+    }
+    public void createFollow(){
+        accountService.createFollow(currentUser,userNameGlobal).enqueue(new Callback<FollowingModel>() {
+            @Override
+            public void onResponse(Call<FollowingModel> call, Response<FollowingModel> response) {
+                if(response.isSuccessful()) {
+                   followUI();
+                   Log.d(tag, "create following from API");
+                }else {
+                    int statusCode  = response.code();
+                    Log.d(tag, "fail create following from API");
+                    // handle request errors depending on status code
+                }
+            }
+            @Override
+            public void onFailure(Call<FollowingModel> call, Throwable t) {
+                Log.d(tag, "fail");
+            }
+        });
+    }
+    public void deleteFollow(){
+        accountService.deleteFollow(currentUser,userNameGlobal).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()) {
+                    unfollowUI();
+                    Log.d(tag, "delete following from API");
+                }else {
+                    int statusCode  = response.code();
+                    Log.d(tag, "fail delete following from API");
+                    MultipleToast.showToast("Bỏ theo dõi không thành công");
+                    // handle request errors depending on status code
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                MultipleToast.showToast("Bỏ theo dõi không thành công");
+                Log.d(tag, "fail");
+            }
+        });
+    }
+
 
     public String getNumber(int number){
         int n;

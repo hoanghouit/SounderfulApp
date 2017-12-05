@@ -25,4 +25,5 @@
     <string name="title_newpost_error">Vui lòng nhập tên bài hát</string>
     <string name="track_newpost_error">Vui lòng chọn bài hát</string>
     <string name="fail_upload">Đăng tải bài hát không thành công</string>
+    <string name="request_fail">Request fail !</string>
 </resources>

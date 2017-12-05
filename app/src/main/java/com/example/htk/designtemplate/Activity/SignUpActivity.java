@@ -24,6 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
+    private final static String tag = "SignUpActivity";
     private AccountService mService;
     private Activity context= this;
     private Button signupButton;
@@ -131,21 +132,23 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()) {
                     MultipleToast.showToast(successfulSignupToast);
-                    Log.d("SignUpActivity", "create account from API");
+                    Log.d(tag, "create account from API");
                     Intent intent = new Intent(context,LoginActivity.class);
                     startActivity(intent);
                 }else {
                     MultipleToast.showToast(failSignupToast);
                     int statusCode  = response.code();
-                    Log.d("SignUpActivity", "fail loaded from API");
-                    Log.d("SignUpActivity", ((Integer)statusCode).toString());
+                    Log.d(tag, "fail create account from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
+                    MultipleToast.showToast(MainActivity.fail_request);
                     // handle request errors depending on status code
                 }
             }
             @Override
             public void onFailure(Call<Account> call, Throwable t) {
                 MultipleToast.showToast(failSignupToast);
-                Log.d("MainActivity", "fail");
+                Log.d(tag, "fail");
+                MultipleToast.showToast(MainActivity.fail_request);
             }
         });
     }
@@ -187,16 +190,18 @@ public class SignUpActivity extends AppCompatActivity {
                         availableUserName = false;
                         MultipleToast.showToast(availableUserNameToast);
                     }
-                    Log.d("SignUpActivity", "respone from API");
+                    Log.d(tag, "respone check available username from API");
                 }else {
                     int statusCode  = response.code();
-                    Log.d("SignUpActivity", "fail loaded from API");
+                    Log.d(tag, "fail check available username loaded from API");
+                    MultipleToast.showToast(MainActivity.fail_request);
                     // handle request errors depending on status code
                 }
             }
             @Override
             public void onFailure(Call<existsUser> call,Throwable t) {
-                Log.d("SignUpActivity", "fail");
+                Log.d(tag, "fail");
+                MultipleToast.showToast(MainActivity.fail_request);
             }
         });
     }

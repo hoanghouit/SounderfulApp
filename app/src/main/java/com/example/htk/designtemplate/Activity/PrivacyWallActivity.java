@@ -26,6 +26,7 @@ import com.example.htk.designtemplate.Service.AccountService;
 import com.example.htk.designtemplate.Service.ApiUtils;
 import com.example.htk.designtemplate.Service.PostService;
 import com.example.htk.designtemplate.Utils.BottomNavigationViewHelper;
+import com.example.htk.designtemplate.Utils.MultipleToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PrivacyWallActivity extends AppCompatActivity {
+    private final static String tag = "PrivacyWallActivity";
     private static final int ACTIVITY_NUM = 4;
     private ArrayList<Post> postArray = new ArrayList<Post>() ;
     private PostAdapter postArrayAdapter;
@@ -58,6 +60,8 @@ public class PrivacyWallActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_wall);
+        // set context for toasts
+        MultipleToast.context = this;
         // set retrofit account service
         accountService = ApiUtils.getAccountService();
 
@@ -124,17 +128,18 @@ public class PrivacyWallActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()) {
                     setUserInfo(response.body());
-                    Log.d("PrivacyWallActivity", "posts loaded from API");
+                    Log.d(tag, "get account detail from API");
                 }else {
                     int statusCode  = response.code();
-                    Log.d("PrivacyWallActivity", "fail loaded from API");
-                    Log.d("PrivacyWallActivity", ((Integer)statusCode).toString());
-                    // handle request errors depending on status code
+                    Log.d(tag, "fail get account detail from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
+                    MultipleToast.showToast(MainActivity.fail_request);
                 }
             }
             @Override
             public void onFailure(Call<Account> call, Throwable t) {
-                Log.d("PrivacyWallActivity", "fail");
+                Log.d(tag, "fail");
+                MultipleToast.showToast(MainActivity.fail_request);
             }
         });
     }
@@ -168,17 +173,17 @@ public class PrivacyWallActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()) {
                     getLikedPosts(response.body());
-                    Log.d("PrivacyWallActivity", "posts loaded from API");
+                    Log.d(tag, "posts loaded from API");
                 }else {
                     int statusCode  = response.code();
-                    Log.d("PrivacyWallActivity", "fail loaded from API");
-                    Log.d("PrivacyWallActivity", ((Integer)statusCode).toString());
-                    // handle request errors depending on status code
+                    Log.d(tag, "fail loaded from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
+                    MultipleToast.showToast(MainActivity.fail_request);
                 }
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("PrivacyWallActivity", "fail");
+                Log.d(tag, "fail");
             }
         });
     }
@@ -192,18 +197,18 @@ public class PrivacyWallActivity extends AppCompatActivity {
                         arr.add( p.getPostId());
                     }
                     postArrayAdapter.setLikedPostIds(arr);
-                    Log.d("MainActivity", "posts loaded from API");
+                    Log.d(tag, "posts loaded from API");
                 }else {
                     int statusCode  = response.code();
-                    Log.d("MainActivity", "fail loaded from API");
-                    Log.d("MainActivity", ((Integer)statusCode).toString());
-                    // handle request errors depending on status code
+                    Log.d(tag, "fail loaded from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
+                    MultipleToast.showToast(MainActivity.fail_request);
                 }
                 postArrayAdapter.addAll(postList);
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("MainActivity","fail");
+                Log.d(tag,"fail"); MultipleToast.showToast(MainActivity.fail_request);
             }
         });
     }

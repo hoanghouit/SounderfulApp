@@ -1,70 +1,126 @@
 package com.example.htk.designtemplate.Activity;
 
-import android.media.AudioManager;
-import android.media.MediaMetadataRetriever;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.media.MediaPlayer;
-import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.htk.designtemplate.Model.Post;
+import com.example.htk.designtemplate.Model.LikeModel;
 import com.example.htk.designtemplate.R;
+import com.example.htk.designtemplate.Service.ApiUtils;
+import com.example.htk.designtemplate.Service.PostService;
+import com.example.htk.designtemplate.Utils.MultipleToast;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MusicPlayer extends AppCompatActivity {
+    private final static String tag = "MusicPlayer";
     private ImageView imageTrack;
-    private TextView titleSong;
     private TextView titleTextView;
     private ImageView imgPlay;
     private ImageView imgReplay;
+    private ImageView imgLike;
     private MediaPlayer mediaPlayer;
     private TextView txtDuration;
     private SeekBar skSong;
     private TextView txtCurrentTime;
     private ImageView backImage;
+    private String title;
+    private String urlImage;
+    private String urlTrack;
+    private ProgressDialog progressDialog;
+    private Activity context=this;
+    private PostService postService = ApiUtils.getPostService();
+    private String currentUser = MainActivity.userName;
+    private boolean liked;
+    private int postId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_player);
+        // set context for toasts
+        MultipleToast.context = this;
+
+        // inital UI
         imageTrack = (ImageView) findViewById(R.id.trackImageView);
-        String url_image="https://images.vexels.com/media/users/6821/74972/raw/1054e351afe112bca797a70d67d93f9e-purple-daisies-blue-background.jpg";
-        Glide.with(this).load(url_image).apply(RequestOptions.circleCropTransform().placeholder(R.mipmap.ic_launcher)).into(imageTrack);
-
-
-
         imgPlay = (ImageView) findViewById(R.id.imgPlay);
         imgReplay = (ImageView) findViewById(R.id.imgReplay);
         txtDuration = (TextView) findViewById(R.id.txtDuration);
         txtCurrentTime = (TextView) findViewById(R.id.txtCurrentTime);
         skSong = (SeekBar) findViewById(R.id.skSong);
         backImage = (ImageView) findViewById(R.id.backImage_playMusicActivity) ;
-        titleSong = (TextView) findViewById(R.id.titleSong) ;
+        titleTextView = (TextView) findViewById(R.id.titleSong) ;
+        imgLike = (ImageView) findViewById(R.id.imgLike);
 
+        // get extra
+        title = getIntent().getExtras().getString("title");
+        urlImage = getIntent().getExtras().getString("urlImage");
+        urlTrack = getIntent().getExtras().getString("urlTrack");
+        liked = getIntent().getExtras().getBoolean("liked");
+        postId = getIntent().getExtras().getInt("postId");
 
+        // set image track
+        Glide.with(this).load(ApiUtils.getImageUrl(urlImage)).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(600,600).circleCrop().error(R.drawable.circle_gray_background)).into(imageTrack);
 
+        // set title song
+        titleTextView.setText(title);
+
+        // set like icon
+        if(liked){
+            imgLike.setImageResource(R.drawable.ic_liked);
+        }
+        else{
+            imgLike.setImageResource(R.drawable.ic_like);
+        }
         createMediaPlayer();
+
+        imgLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(liked){
+                    liked = false;
+                    imgLike.setImageResource(R.drawable.ic_like_gray);
+                    deleteLike(postId);
+                }
+                else{
+                    liked = true;
+                    imgLike.setImageResource(R.drawable.ic_liked);
+                    createLike(postId);
+                }
+            }
+        });
 
         imgPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mediaPlayer.isPlaying()){
+                    //imageTrack.clearAnimation();
                     mediaPlayer.pause();
                     imgPlay.setImageResource(R.drawable.ic_play_song);
                 }
                 else{
+                    //imageTrack.setAnimation(initRotateAnimation());
                     mediaPlayer.start();
                     imgPlay.setImageResource(R.drawable.ic_pause_song);
-
                 }
             }
         });
@@ -72,23 +128,34 @@ public class MusicPlayer extends AppCompatActivity {
         imgReplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mediaPlayer.stop();
-                imgPlay.setImageResource(R.drawable.ic_pause_song);
-                createMediaPlayer();
+                if(mediaPlayer.isLooping()){
+                    mediaPlayer.setLooping(false);
+                    imgReplay.setImageResource(R.drawable.ic_replay);
+                }
+                else{
+                    mediaPlayer.setLooping(true);
+                    imgReplay.setImageResource(R.drawable.ic_replay_song);
+                }
+
+
             }
         });
 
         backImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
                 mediaPlayer.stop();
+                finish();
+
             }
         });
     }
 
+
     protected void createMediaPlayer(){
-        String url = "https://drive.google.com/uc?export=download&id=1jPBGvhgR7L0Ja9RoFvvHNPMjNeGDCy2k";
+        String url = ApiUtils.getTrackUrl(urlTrack);
+        //String url = "https://drive.google.com/uc?export=download&id=12WSdJFxUZrV-rX6vMQz47OTKeOpd1IC3";
+
         mediaPlayer = new MediaPlayer();
         try {
             mediaPlayer.setDataSource(url);
@@ -113,8 +180,6 @@ public class MusicPlayer extends AppCompatActivity {
         int duration = mediaPlayer.getDuration();
         SimpleDateFormat formatDuration = new SimpleDateFormat("mm:ss");
         txtDuration.setText(formatDuration.format(duration));
-
-
     }
 
     protected void updateTime(){
@@ -155,6 +220,68 @@ public class MusicPlayer extends AppCompatActivity {
                 mediaPlayer.seekTo(skSong.getProgress());
             }
         });
+    }
+    public void createProgressDialog(){
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading ...");
+        progressDialog.setProgress(0);
+    }
+
+    public void createLike(final int postId){
+        postService.createLike(currentUser,Integer.toString(postId)).enqueue(new Callback<LikeModel>() {
+            @Override
+            public void onResponse(Call<LikeModel> call, Response<LikeModel> response) {
+                if(response.isSuccessful()) {
+                    Log.d(tag, "create like from API");
+                }else {
+                    MultipleToast.showToast("Yêu thích không thành công");
+                    int statusCode  = response.code();
+                    Log.d(tag, "fail create like from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
+                    // handle request errors depending on status code
+                    MultipleToast.showToast(MainActivity.fail_request);
+                }
+            }
+            @Override
+            public void onFailure(Call<LikeModel> call, Throwable t) {
+                MultipleToast.showToast(MainActivity.fail_request);
+                Log.d(tag, "fail");
+            }
+        });
+    }
+
+    public void deleteLike(final int postId) {
+        postService.deleteLike(currentUser, Integer.toString(postId)).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.d(tag, "delete like from API");
+                } else {
+                    MultipleToast.showToast("Hủy yêu thích không thành công");
+                    int statusCode = response.code();
+                    Log.d(tag, "delete create like from API");
+                    Log.d(tag, ((Integer) statusCode).toString());
+                    MultipleToast.showToast(MainActivity.fail_request);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                MultipleToast.showToast(MainActivity.fail_request);
+                Log.d(tag, "fail");
+            }
+        });
+    }
+    private Animation initRotateAnimation(){
+        RotateAnimation rotateAnimation = new RotateAnimation(0,360,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        rotateAnimation.setDuration(10000);
+        rotateAnimation.setFillAfter(true);
+        rotateAnimation.setRepeatMode(Animation.RESTART);
+        rotateAnimation.setRepeatCount(Animation.INFINITE);
+        rotateAnimation.setInterpolator(new LinearInterpolator());
+        return rotateAnimation;
     }
 
 

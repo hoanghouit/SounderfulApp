@@ -50,7 +50,7 @@ public interface PostService {
     Call<PostModel> createPost(@Field("userName") String userName, @Field("title") String title, @Field("description") String description);
 
     @PUT("api/posts/{id}/")
-    Call<ResponseBody> completePost(@Path("id") int id, @Body PostModel postModel);
+    Call<ResponseBody> updatePost(@Path("id") int id, @Body PostModel postModel);
 
     @DELETE("api/posts/{id}/")
     Call<ResponseBody> deletePost(@Path("id") int id);

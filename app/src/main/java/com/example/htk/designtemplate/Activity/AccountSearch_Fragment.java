@@ -17,6 +17,7 @@ import com.example.htk.designtemplate.Model.Account;
 import com.example.htk.designtemplate.R;
 import com.example.htk.designtemplate.Service.AccountService;
 import com.example.htk.designtemplate.Service.ApiUtils;
+import com.example.htk.designtemplate.Utils.MultipleToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ import retrofit2.Response;
 
 
 public class AccountSearch_Fragment extends Fragment {
+    private final static String tag = "AccountSearchFragment";
     private ListView listViewAccount;
     private TextView recentlySearch;
     private AccountSearchAdapter accountSearchAdapter;
@@ -61,6 +63,8 @@ public class AccountSearch_Fragment extends Fragment {
         // set retrofit accont service
         mService = ApiUtils.getAccountService();
         recentlySearch();
+        // set context for toasts
+        MultipleToast.context = getActivity();
     }
 
     public void searchAccounts(String key){
@@ -76,17 +80,19 @@ public class AccountSearch_Fragment extends Fragment {
                     }
                     accountSearchAdapter.notifyDataSetChanged();
                     recentlySearch.setVisibility(View.GONE);
-                    Log.d("AccountSearchFragment", "posts loaded from API");
+                    Log.d(tag, "search accounts from API");
                 }else {
                     int statusCode  = response.code();
-                    Log.d("AccountSearchFragment", "fail loaded from API");
-                    Log.d("AccountSearchFragment", ((Integer)statusCode).toString());
+                    Log.d(tag, "fail search account from API");
+                    Log.d(tag, ((Integer)statusCode).toString());
+                    MultipleToast.showToast(MainActivity.fail_request);
                     // handle request errors depending on status code
                 }
             }
             @Override
             public void onFailure(Call<List<Account>> call, Throwable t) {
-                Log.d("AccountSearchFragment", "fail");
+                Log.d(tag, "fail");
+                MultipleToast.showToast(MainActivity.fail_request);
             }
         });
     }

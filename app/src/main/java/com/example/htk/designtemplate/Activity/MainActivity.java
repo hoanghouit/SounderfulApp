@@ -15,6 +15,7 @@ import com.example.htk.designtemplate.R;
 import com.example.htk.designtemplate.Service.ApiUtils;
 import com.example.htk.designtemplate.Service.PostService;
 import com.example.htk.designtemplate.Utils.BottomNavigationViewHelper;
+import com.example.htk.designtemplate.Utils.MultipleToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +35,15 @@ public class MainActivity extends AppCompatActivity {
     private PostService mService;
     protected static String userName;
     private ProgressDialog progressDialog;
+    public static String fail_request;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // set context for toasts
+        MultipleToast.context = this;
+        // set string
+        fail_request = getResources().getString(R.string.request_fail);
 
         // set up custom action bar
         setActionBar();
@@ -56,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         // set progress dialog
         createProgressDialog();
-        //progressDialog.show();
+        progressDialog.show();
 
         // set retrofit service
          mService = ApiUtils.getPostService();
@@ -79,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart(){
         super.onRestart();
+        progressDialog.show();
         loadPost();
     }
     public void loadPost(){
@@ -93,19 +100,21 @@ public class MainActivity extends AppCompatActivity {
                     int statusCode  = response.code();
                     Log.d("MainActivity", "fail loaded from API");
                     Log.d("MainActivity", ((Integer)statusCode).toString());
-                    // handle request errors depending on status code
+                    MultipleToast.showToast(fail_request);
                 }
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
                 Log.d("MainActivity","fail");
+                progressDialog.dismiss();
+                MultipleToast.showToast(fail_request);
             }
         });
     }
     public void createProgressDialog(){
         progressDialog = new ProgressDialog(context);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Uploading ...");
+        progressDialog.setMessage("Loading ...");
         progressDialog.setProgress(0);
     }
     public void getLikedPosts(final List<Post> postList){
@@ -123,14 +132,17 @@ public class MainActivity extends AppCompatActivity {
                     int statusCode  = response.code();
                     Log.d("MainActivity", "fail loaded from API");
                     Log.d("MainActivity", ((Integer)statusCode).toString());
-                    // handle request errors depending on status code
+                    MultipleToast.showToast(fail_request);
                 }
+                postArrayAdapter.clear();
                 postArrayAdapter.addAll(postList);
                 progressDialog.dismiss();
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
                 Log.d("MainActivity","fail");
+                progressDialog.dismiss();
+                MultipleToast.showToast(fail_request);
             }
         });
     }
