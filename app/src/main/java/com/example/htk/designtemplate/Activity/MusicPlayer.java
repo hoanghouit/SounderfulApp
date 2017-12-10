@@ -84,6 +84,9 @@ public class MusicPlayer extends AppCompatActivity {
         // set title song
         titleTextView.setText(title);
 
+        // set animation
+        imageTrack.setAnimation(initRotateAnimation());
+
         // set like icon
         if(liked){
             imgLike.setImageResource(R.drawable.ic_liked);
@@ -276,7 +279,7 @@ public class MusicPlayer extends AppCompatActivity {
     private Animation initRotateAnimation(){
         RotateAnimation rotateAnimation = new RotateAnimation(0,360,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        rotateAnimation.setDuration(10000);
+        rotateAnimation.setDuration(13000);
         rotateAnimation.setFillAfter(true);
         rotateAnimation.setRepeatMode(Animation.RESTART);
         rotateAnimation.setRepeatCount(Animation.INFINITE);

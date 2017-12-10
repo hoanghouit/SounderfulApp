@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:paddingLeft="@dimen/extra_small_margin"
+    android:paddingRight="@dimen/extra_small_margin"
+    android:layout_marginBottom="@dimen/small_margin"
+    android:orientation="vertical"
+    tools:context="com.example.htk.designtemplate.Activity.EditPostActivity">
+    <android.support.v7.widget.Toolbar
+        app:contentInsetStart="0dp"
+        app:contentInsetLeft="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorWhite"
+        android:elevation="3dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/backButton_EditPostActivity"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:src="@drawable/ic_back"
+                android:layout_alignParentLeft="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Sửa bài đăng"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorDark"
+                android:textSize="18dp"
+                android:layout_toRightOf="@id/backButton_EditPostActivity"/>
+            <Button
+                android:id="@+id/updateButton_EditPostActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:text="Cập nhật"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/transparent"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+            <ImageView
+                android:id="@+id/avatarImage_EditPostActivity"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:src="@mipmap/ic_avatar_error"
+                android:layout_gravity="top"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/small_margin"
+                android:layout_gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/userName_EditPostActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="5"
+                    android:textColor="@color/colorDark"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:gravity="left"
+                    android:id="@+id/timeTextView_EditPostActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+            <TextView
+                android:layout_marginLeft="@dimen/extra_small_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorDark"
+                android:text="Tiêu đề"/>
+            <EditText
+                android:id="@+id/title_EditPostActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:singleLine="false"
+                android:textSize="18sp"
+                android:textStyle="normal" />
+            <TextView
+                android:layout_marginLeft="@dimen/extra_small_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorDark"
+                android:text="Bài hát"/>
+            <EditText
+                android:id="@+id/trackEditTextView_EditPostActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:singleLine="false"
+                android:textSize="18sp"
+                android:textColor="@color/colorDark"
+                android:textStyle="normal"
+                android:enabled="false" />
+            <TextView
+                android:layout_marginLeft="@dimen/extra_small_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorDark"
+                android:text="Nội dung"/>
+            <EditText
+                android:id="@+id/descriptionTextView_EditPostActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="3"
+                android:singleLine="false"
+                android:textSize="18sp" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/trackImage_EditPostActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@color/colorLittleGray"
+                    android:scaleType="centerCrop"/>
+                <ImageView
+                    android:id="@+id/addTrackImage_EditPostActivity"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:alpha="0.3"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@mipmap/ic_add"/>
+            </FrameLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

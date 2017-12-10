@@ -112,8 +112,6 @@ public class NewPostActivity extends AppCompatActivity {
 
         //set user name
         userNameTextView = (TextView) findViewById(R.id.userName_newPost);
-        avatarImage = (ImageView) findViewById(R.id.avatarImage_newPost);
-
         userNameTextView.setText(userName);
         // set user infor
         loadUserInfo();

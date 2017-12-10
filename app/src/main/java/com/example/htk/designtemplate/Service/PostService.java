@@ -36,8 +36,9 @@ public interface PostService {
     @GET("posts/{userName}/")
     Call<List<Post>> getPostsWall(@Path("userName") String userName);
 
-    @GET("posts/search/{key}/")
-    Call<List<Post>> searchPost(@Path("key") String userName);
+    @FormUrlEncoded
+    @POST("posts/search/bytitle/")
+    Call<List<Post>> searchPost(@Field("title") String title);
 
     @Multipart
     @POST("upload/image/")
@@ -74,6 +75,17 @@ public interface PostService {
     @FormUrlEncoded
     @POST("api/comments/")
     Call<CommentModel> createComment(@Field("userName") String userName, @Field("postId") int postId, @Field("context") String content);
+
+    @GET("api/posts/{postid}")
+    Call<Post> getOnePost(@Path("postid") int postId);
+
+    @Multipart
+    @POST("posts/update/image/")
+    Call<ResponseBody> updateImage(@Part MultipartBody.Part file, @Part("postid") int postid);
+
+    @FormUrlEncoded
+    @POST("posts/update/info/")
+    Call<ResponseBody> modifyPost(@Field("id") int postId, @Field("title") String title, @Field("description") String description);
 
 
 }

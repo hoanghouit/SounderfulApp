@@ -17,12 +17,12 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.htk.designtemplate.Activity.CommentActivity;
+import com.example.htk.designtemplate.Activity.EditPostActivity;
 import com.example.htk.designtemplate.Activity.FriendWallActivity;
 import com.example.htk.designtemplate.Activity.MainActivity;
 import com.example.htk.designtemplate.Activity.MusicPlayer;
@@ -250,7 +250,12 @@ public class PostAdapter extends ArrayAdapter<Post> {
                     int id = item.getItemId();
                     switch (id)
                     {
-                        case R.id.item_edit: Toast.makeText(context,"sửa",Toast.LENGTH_LONG).show(); break;
+                        case R.id.item_edit: {
+                            Intent intent = new Intent(context, EditPostActivity.class);
+                            intent.putExtra("postId", post.getPostId());
+                            context.startActivity(intent);
+                            break;
+                        }
                         case R.id.item_delete: {
                             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
                             dialogBuilder.setMessage("Bạn có chắc chắc muốn xóa?");

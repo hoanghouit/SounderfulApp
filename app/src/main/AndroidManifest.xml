@@ -13,21 +13,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/noActionBar">
-        <activity android:name=".Activity.MainActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".Activity.MainActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".Activity.PrivacyWallActivity"
             android:label="@string/title_activity_privacy_wall"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Activity.FriendWallActivity" />
-        <activity android:name=".Activity.SearchActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".Activity.SearchActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".Activity.RecentlySearch" />
-        <activity android:name=".Activity.NotificationActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".Activity.NotificationActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".Activity.CommentActivity" />
-        <activity android:name=".Activity.LoginActivity"
+        <activity
+            android:name=".Activity.LoginActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,11 +39,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.SignUpActivity"
-            android:noHistory="true"/>
-        <activity android:name=".Activity.NewPostActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".Activity.SignUpActivity"
+            android:noHistory="true" />
+        <activity
+            android:name=".Activity.NewPostActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".Activity.MusicPlayer" />
+        <activity android:name=".Activity.EditPostActivity"></activity>
     </application>
 
 </manifest>
