@@ -3,6 +3,7 @@ package com.example.htk.designtemplate.Service;
 import com.example.htk.designtemplate.Model.Comment;
 import com.example.htk.designtemplate.Model.CommentModel;
 import com.example.htk.designtemplate.Model.LikeModel;
+import com.example.htk.designtemplate.Model.Notification;
 import com.example.htk.designtemplate.Model.Post;
 import com.example.htk.designtemplate.Model.PostModel;
 
@@ -87,5 +88,7 @@ public interface PostService {
     @POST("posts/update/info/")
     Call<ResponseBody> modifyPost(@Field("id") int postId, @Field("title") String title, @Field("description") String description);
 
+    @GET("notifications/{username}/")
+    Call<List<Notification>> getNotifications(@Path("username") String userName);
 
 }

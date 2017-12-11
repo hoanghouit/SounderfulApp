@@ -46,7 +46,10 @@
             android:name=".Activity.NewPostActivity"
             android:launchMode="singleTask" />
         <activity android:name=".Activity.MusicPlayer" />
-        <activity android:name=".Activity.EditPostActivity"></activity>
+        <activity android:name=".Activity.EditPostActivity" />
+        <activity android:name=".Activity.UpdateAvatarActivity" />
+        <activity android:name=".Activity.UpdateBackgroundActivity" />
+        <activity android:name=".Activity.PostActivity"></activity>
     </application>
 
 </manifest>

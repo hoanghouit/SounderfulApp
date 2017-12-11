@@ -1,5 +1,8 @@
 package com.example.htk.designtemplate.Model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 /**
@@ -7,10 +10,24 @@ import java.util.Date;
  */
 
 public class Notification {
+    @SerializedName("id")
+    @Expose
     private int id;
+
+    @SerializedName("userName")
+    @Expose
     private Account account;
+
+    @SerializedName("postId")
+    @Expose
     private Post post;
+
+    @SerializedName("action")
+    @Expose
     private String action;
+
+    @SerializedName("notificationTime")
+    @Expose
     private Date notificationTime;
 
     public int getId() {

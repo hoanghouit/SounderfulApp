@@ -6,13 +6,16 @@ import com.example.htk.designtemplate.Model.FollowingModel;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 /**
@@ -46,4 +49,13 @@ public interface AccountService {
     @FormUrlEncoded
     @POST("accounts/follow/delete/")
     Call<ResponseBody> deleteFollow(@Field("usernameA") String userNameA, @Field("usernameB") String userNameB);
+
+    @Multipart
+    @POST("accounts/update/avatar/")
+    Call<ResponseBody> updateAvatar(@Part MultipartBody.Part file, @Part("username") String username);
+
+
+    @Multipart
+    @POST("accounts/update/background/")
+    Call<ResponseBody> updateBackground(@Part MultipartBody.Part file, @Part("username") String username);
 }

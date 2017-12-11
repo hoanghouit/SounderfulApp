@@ -10,13 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.htk.designtemplate.Adapter.PostAdapter;
 import com.example.htk.designtemplate.Model.Account;
@@ -55,6 +55,7 @@ public class PrivacyWallActivity extends AppCompatActivity {
     private PostService mService;
     private Activity context =this;
     private ArrayList<Integer> likedPostIds;
+    private Button editPrivacyWall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,23 @@ public class PrivacyWallActivity extends AppCompatActivity {
         View head= inflater.inflate(R.layout.header_privacy_wall,listView,false);
         loadUserInfo();
         listView.addHeaderView(head);
+
+        //initial UI
+        biographyTextView = (TextView) findViewById(R.id.biographyTextView);
+        avatar = (ImageView) findViewById(R.id.avatarImagePrivacyWall);
+        background = (ImageView) findViewById(R.id.backGroundImage);
+        postNumberTextView = (TextView) findViewById(R.id.postNumberTextView);
+        followerTextView = (TextView) findViewById(R.id.followerNumberTextView);
+        followingTextView = (TextView) findViewById(R.id.followingNumberTextView);
+        editPrivacyWall = (Button) findViewById(R.id.editPrivacyWallButton);
+
+        //set action for clicking button edit privacy wall
+        editPrivacyWall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMenuEdit(view);
+            }
+        });
 
          // set adapter for list view
         postArrayAdapter = new PostAdapter(this,R.layout.item_post_listview, postArray);
@@ -148,20 +166,14 @@ public class PrivacyWallActivity extends AppCompatActivity {
         });
     }
     public void setUserInfo(Account account){
-        biographyTextView = (TextView) findViewById(R.id.biographyTextView);
-        avatar = (ImageView) findViewById(R.id.avatarImagePrivacyWall);
-        background = (ImageView) findViewById(R.id.backGroundImage);
-        postNumberTextView = (TextView) findViewById(R.id.postNumberTextView);
-        followerTextView = (TextView) findViewById(R.id.followerNumberTextView);
-        followingTextView = (TextView) findViewById(R.id.followingNumberTextView);
 
         biographyTextView.setText(account.getBiography());
         // Set avatar image
         String url= ApiUtils.getImageUrl(account.getUrlAvatar());
-        Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(500,500).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
+        Glide.with(this).load(url).apply(RequestOptions.overrideOf(500,500).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
 
         String url_background= ApiUtils.getImageUrl(account.getUrlBackground());
-        Glide.with(this).load(url_background).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).centerCrop().error(R.color.colorLittleGray)).into(background);
+        Glide.with(this).load(url_background).apply(RequestOptions.centerCropTransform().error(R.color.colorLittleGray)).into(background);
 
         postNumberTextView.setText(getNumber(account.getPostNumber()));
         followerTextView.setText(getNumber(account.getFollowerNumber()));
@@ -265,6 +277,36 @@ public class PrivacyWallActivity extends AppCompatActivity {
             }
         });
         menu.inflate (R.menu.popup_menu_privacy_wall);
+        menu.show();
+    }
+    public void showMenuEdit (View view)
+    {
+        PopupMenu menu = new PopupMenu (context, view);
+        menu.setOnMenuItemClickListener (new PopupMenu.OnMenuItemClickListener ()
+        {
+            @Override
+            public boolean onMenuItemClick (MenuItem item)
+            {
+                int id = item.getItemId();
+                switch (id)
+                {
+                    case R.id.item_update_avatar: {
+                        Intent intent = new Intent(context,UpdateAvatarActivity.class);
+                        intent.putExtra("userName", userName);
+                        startActivity(intent);
+                        break;
+                    }
+                    case R.id.item_update_background: {
+                        Intent intent = new Intent(context,UpdateBackgroundActivity.class);
+                        intent.putExtra("userName", userName);
+                        startActivity(intent);
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
+        menu.inflate (R.menu.popup_menu_edit_privacy_wall);
         menu.show();
     }
 

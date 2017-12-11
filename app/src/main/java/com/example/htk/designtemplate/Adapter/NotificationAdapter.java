@@ -1,6 +1,7 @@
 package com.example.htk.designtemplate.Adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.htk.designtemplate.Activity.PostActivity;
 import com.example.htk.designtemplate.Model.Notification;
 import com.example.htk.designtemplate.R;
 import com.example.htk.designtemplate.Service.ApiUtils;
@@ -49,10 +51,17 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
 
 
 
-        // Set action
+        // Set text
         String userName = notification.getAccount().getUserName();
-        String action = notification.getAction();
-        String content = userName+" "+action;
+        String actionId = notification.getAction();
+        String action = " đã tương tác với bài đăng của bạn";
+        if(actionId.equals("like")){
+            action = " đã thích bài đăng của bạn";
+        }
+        if(actionId.equals("comment")){
+            action = " đã bình luận bài đăng của bạn";
+        }
+        String content = userName+action;
         int userNameLength = userName.length();
         SpannableStringBuilder text = new SpannableStringBuilder(content);
         text.setSpan(new android.text.style.StyleSpan(Typeface.BOLD),0,userNameLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -60,20 +69,21 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
 
         // Set avatar image
         String url= ApiUtils.getImageUrl(notification.getAccount().getUrlAvatar());
-        Glide.with(context).load(url).apply(RequestOptions.circleCropTransform().placeholder(R.mipmap.ic_launcher_round)).into(avatar);
+        Glide.with(context).load(url).apply(RequestOptions.circleCropTransform().error(R.mipmap.ic_avatar_error)).into(avatar);
 
         // set time
         Date date = notification.getNotificationTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
         time.setText(simpleDateFormat.format(date));
         // set action for clicking view
-/*        convertView.setOnClickListener(new View.OnClickListener() {
+        convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, FriendWallActivity.class);
+                Intent intent = new Intent(context, PostActivity.class);
+                intent.putExtra("postId", notification.getPost().getPostId());
                 context.startActivity(intent);
             }
-        });*/
+        });
         return convertView;
     }
 }
