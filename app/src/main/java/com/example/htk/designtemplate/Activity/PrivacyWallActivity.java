@@ -17,6 +17,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.htk.designtemplate.Adapter.PostAdapter;
 import com.example.htk.designtemplate.Model.Account;
@@ -74,7 +75,6 @@ public class PrivacyWallActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.ListViewPost);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View head= inflater.inflate(R.layout.header_privacy_wall,listView,false);
-        loadUserInfo();
         listView.addHeaderView(head);
 
         //initial UI
@@ -98,11 +98,8 @@ public class PrivacyWallActivity extends AppCompatActivity {
         postArrayAdapter = new PostAdapter(this,R.layout.item_post_listview, postArray);
         listView.setAdapter(postArrayAdapter);
 
-        // add post for newsfeed
-        //addPost();
         // set retrofit service
         mService = ApiUtils.getPostService();
-        loadPost();
 
         //set action for back button
         backImage = (ImageView) findViewById(R.id.backImage);
@@ -138,8 +135,9 @@ public class PrivacyWallActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
     }
     @Override
-    protected void onRestart(){
-        super.onRestart();
+    protected void onResume(){
+        super.onResume();
+        loadUserInfo();
         loadPost();
     }
 
@@ -170,10 +168,10 @@ public class PrivacyWallActivity extends AppCompatActivity {
         biographyTextView.setText(account.getBiography());
         // Set avatar image
         String url= ApiUtils.getImageUrl(account.getUrlAvatar());
-        Glide.with(this).load(url).apply(RequestOptions.overrideOf(500,500).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
+        Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).override(500,500).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
 
         String url_background= ApiUtils.getImageUrl(account.getUrlBackground());
-        Glide.with(this).load(url_background).apply(RequestOptions.centerCropTransform().error(R.color.colorLittleGray)).into(background);
+        Glide.with(this).load(url_background).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).centerCrop().error(R.color.colorLittleGray)).into(background);
 
         postNumberTextView.setText(getNumber(account.getPostNumber()));
         followerTextView.setText(getNumber(account.getFollowerNumber()));

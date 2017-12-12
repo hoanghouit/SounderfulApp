@@ -37,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
     private String successfullyloginToast;
     private String completedToast;
     private String incorrectLoginToast;
-    private boolean lengthPassword = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,8 +89,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                    String userNameText = userNameEditText.getText().toString();
-                    checkValidUserName(userNameText);
 
             }
         });
@@ -109,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                checkLengthPassWord();
 
             }
         });
@@ -126,36 +122,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    public boolean checkLengthPassWord(){
-        String passWordText = passwordEditText.getText().toString();
-        if(passWordText.length()>=6){
-            lengthPassword = true;
-            return true;
-        }
-        else {
-            lengthPassword = false;
-            MultipleToast.showToast(lengthPasswordToast);
-            return false;
-        }
-    }
-    public void checkValidUserName(String userName){
-        if(!userName.matches("[a-zA-Z0-9]*"))
-        {
-            userNameEditText.setText(userName.substring(0,userName.length() - 1));
-            userNameEditText.setSelection(userName.length()-1);
-            MultipleToast.showToast(validUserNameToast);
-        }
-    }
+
     public boolean check() {
         boolean completedUserName = userNameEditText.getText().toString().length() == 0;
         boolean completedPassword = passwordEditText.getText().toString().length() == 0;
         if(completedUserName || completedPassword){
             MultipleToast.showToast(completedToast);
             return false;
-        }
-        if (!lengthPassword) {
-                MultipleToast.showToast(lengthPasswordToast);
-                return false;
         }
         return true;
     }

@@ -72,7 +72,7 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
 
         // Set avatar image
         String url= ApiUtils.getImageUrl((comment.getAccount().getUrlAvatar()));
-        Glide.with(context).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(200,200).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
+        Glide.with(context).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).override(200,200).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
 
         // set time
         Date date = comment.getCommentTime();

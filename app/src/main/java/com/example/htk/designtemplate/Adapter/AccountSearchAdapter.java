@@ -52,7 +52,7 @@ public class AccountSearchAdapter extends ArrayAdapter<Account> {
 
         // Set avater image
         String url= ApiUtils.getImageUrl(account.getUrlAvatar());
-        Glide.with(context).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(200,200).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
+        Glide.with(context).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).override(200,200).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
 
         // set action for clicking view
         convertView.setOnClickListener(new View.OnClickListener() {

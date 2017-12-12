@@ -147,11 +147,15 @@ public class MusicPlayer extends AppCompatActivity {
         backImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mediaPlayer.stop();
                 finish();
 
             }
         });
+    }
+    @Override
+    protected void onStop(){
+        super.onStop();
+        mediaPlayer.stop();
     }
 
 

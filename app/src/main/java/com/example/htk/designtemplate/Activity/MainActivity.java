@@ -66,9 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
         // set retrofit service
          mService = ApiUtils.getPostService();
-
-        // load posts
-         loadPost();
     }
 
     public void setActionBar(){
@@ -83,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
     }
     @Override
-    protected void onRestart(){
-        super.onRestart();
+    protected void onResume(){
+        super.onResume();
         progressDialog.show();
         loadPost();
     }

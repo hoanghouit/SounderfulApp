@@ -49,13 +49,16 @@ public class FriendWallActivity extends AppCompatActivity {
     private PostService mService;
     private String currentUser = MainActivity.userName;
     private ArrayList<Integer> likedPostIds;
-    private boolean following = false;
+    private boolean isFollowing = false;
+    private TextView follower;
+    private TextView following;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_wall);
         // set up intent
         intent = getIntent();
+
 
         //
         userNameGlobal = intent.getStringExtra("userName");
@@ -69,12 +72,12 @@ public class FriendWallActivity extends AppCompatActivity {
         loadUserInfo();
         listView.addHeaderView(header);
 
+        follower = (TextView) findViewById(R.id.followerNumberTextView_friendwall);
+        following = (TextView) findViewById(R.id.followingNumberTextView_friendwall);
+
         // set adapter for list view
         postArrayAdapter = new PostAdapter(this,R.layout.item_post_listview, postArray);
         listView.setAdapter(postArrayAdapter);
-
-        // add post for newsfeed
-       // addPost();
 
         // set retrofit service
         mService = ApiUtils.getPostService();
@@ -95,7 +98,7 @@ public class FriendWallActivity extends AppCompatActivity {
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(following){
+                if(isFollowing){
                    deleteFollow();
                 }
                 else
@@ -119,11 +122,15 @@ public class FriendWallActivity extends AppCompatActivity {
         followButton.setBackgroundResource(R.color.colorWhite);
         followButton.setTextColor(getResources().getColor(R.color.colorDark));
         followButton.setText(R.string.follow);
+        int followerNumber = Integer.parseInt(follower.getText().toString())-1;
+        follower.setText(getNumber(followerNumber));
     }
     public void followUI(){
         followButton.setBackgroundResource(R.color.colorBlue);
         followButton.setTextColor(getResources().getColor(R.color.colorWhite));
         followButton.setText(R.string.following);
+        int followerNumber = Integer.parseInt(follower.getText().toString())+1;
+        follower.setText(getNumber(followerNumber));
     }
 
     public void loadUserInfo(){
@@ -155,8 +162,7 @@ public class FriendWallActivity extends AppCompatActivity {
         ImageView avatar = (ImageView) findViewById(R.id.avatarImage_friendwall);
         ImageView background = (ImageView) findViewById(R.id.backGroundImage_friendwall);
         TextView postNumber = (TextView) findViewById(R.id.postNumberTextView_friendwall);
-        TextView follower = (TextView) findViewById(R.id.followerNumberTextView_friendwall);
-        TextView following = (TextView) findViewById(R.id.followingNumberTextView_friendwall);
+
 
         userName.setText(userNameGlobal);
         biography.setText(account.getBiography());
@@ -226,11 +232,11 @@ public class FriendWallActivity extends AppCompatActivity {
             public void onResponse(Call<SignUpActivity.existsUser> call, Response<SignUpActivity.existsUser> response) {
                 if(response.isSuccessful()) {
                     if(response.body().exists.equals("0")) {
-                        following = false;
+                        isFollowing = false;
                         unfollowUI();
                     }
                     else{
-                        following = true;
+                        isFollowing = true;
                         followUI();
                     }
                     Log.d(tag, "check follow from API");
@@ -252,10 +258,11 @@ public class FriendWallActivity extends AppCompatActivity {
             public void onResponse(Call<FollowingModel> call, Response<FollowingModel> response) {
                 if(response.isSuccessful()) {
                    followUI();
-                   Log.d(tag, "create following from API");
+                   isFollowing = true;
+                   Log.d(tag, "create isFollowing from API");
                 }else {
                     int statusCode  = response.code();
-                    Log.d(tag, "fail create following from API");
+                    Log.d(tag, "fail create isFollowing from API");
                     // handle request errors depending on status code
                 }
             }
@@ -271,10 +278,11 @@ public class FriendWallActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
                     unfollowUI();
-                    Log.d(tag, "delete following from API");
+                    isFollowing = false;
+                    Log.d(tag, "delete isFollowing from API");
                 }else {
                     int statusCode  = response.code();
-                    Log.d(tag, "fail delete following from API");
+                    Log.d(tag, "fail delete isFollowing from API");
                     MultipleToast.showToast("Bỏ theo dõi không thành công");
                     // handle request errors depending on status code
                 }

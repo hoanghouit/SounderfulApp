@@ -79,7 +79,7 @@ public class TrackSearchAdapter extends ArrayAdapter<Post> {
 
         // Set avater image
         String url= ApiUtils.getImageUrl(post.getUrlImage());
-        Glide.with(context).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(200,200).circleCrop().error(R.drawable.circle_gray_background)).into(image);
+        Glide.with(context).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).override(200,200).circleCrop().error(R.drawable.circle_gray_background)).into(image);
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

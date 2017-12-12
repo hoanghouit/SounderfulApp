@@ -7,8 +7,8 @@ package com.example.htk.designtemplate.Service;
 
 public class ApiUtils {
 
-    public static final String BASE_URL = "http://10.0.3.2:8000/";
-    //public static final String BASE_URL = "http://192.168.42.136:8000/";
+    //public static final String BASE_URL = "http://10.0.3.2:8000/";
+    public static final String BASE_URL = "http://192.168.42.136:8000/";
 
     public static PostService getPostService() {
         return RetrofitClient.getClient(BASE_URL).create(PostService.class);

@@ -164,6 +164,10 @@ public class NewPostActivity extends AppCompatActivity {
                     MultipleToast.showToast(track_error);
                     return;
                 }
+                if(imageUriGlobal == null){
+                    MultipleToast.showToast("Vui lòng chọn hình ảnh");
+                    return;
+                }
                 createPost(title,description);
             }
         });

@@ -1,6 +1,7 @@
 package com.example.htk.designtemplate.Activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -44,8 +45,9 @@ public class NotificationActivity extends AppCompatActivity {
         //set retrofit post service
         mService = ApiUtils.getPostService();
 
-        // get userName
-        userName = MainActivity.userName;
+        // set user name
+        SharedPreferences sharedPreferences= getSharedPreferences("user",Context.MODE_PRIVATE);
+        userName = sharedPreferences.getString("userName","");
 
         // set adapter for list view
         listView = (ListView) findViewById(R.id.listView_notificationActivity);
@@ -85,6 +87,7 @@ public class NotificationActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Notification>> call, Response<List<Notification>> response) {
                 if(response.isSuccessful()) {
+
                     notificationAdapter.clear();
                     notificationAdapter.addAll(response.body());
                     notificationAdapter.notifyDataSetChanged();
