@@ -122,10 +122,10 @@ public class UpdateBackgroundActivity extends AppCompatActivity {
     public void setUserInfo(Account account){
         // Set avatar image
         String url= ApiUtils.getImageUrl(account.getUrlAvatar());
-        Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatarImage);
+        Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatarImage);
         // Set avatar image
         String url_background= ApiUtils.getImageUrl(account.getUrlBackground());
-        Glide.with(this).load(url_background).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).centerCrop().error(R.mipmap.ic_avatar_error)).into(backgroundImage);
+        Glide.with(this).load(url_background).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true).centerCrop().error(R.mipmap.ic_avatar_error)).into(backgroundImage);
     }
     public String getFileExtension(Uri fileUri){
         File file = FileUtils.getFile(this, fileUri);

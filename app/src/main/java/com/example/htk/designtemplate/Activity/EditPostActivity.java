@@ -240,7 +240,7 @@ public class EditPostActivity extends AppCompatActivity {
     public void setPostInfo(Post post) {
         // Set track image
         String url = ApiUtils.getImageUrl(post.getUrlImage());
-        Glide.with(this).load(url).apply(RequestOptions.overrideOf(800, 400).error(R.color.colorLittleGray)).into(trackImage);
+        Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true).override(800, 400).error(R.color.colorLittleGray)).into(trackImage);
         titleEditText.setText(post.getTitle());
         trackNameTextView.setText(post.getUrlTrack());
         descriptionEditText.setText(post.getDescription());

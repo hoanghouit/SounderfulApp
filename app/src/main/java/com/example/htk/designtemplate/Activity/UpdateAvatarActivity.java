@@ -119,7 +119,7 @@ public class UpdateAvatarActivity extends AppCompatActivity {
     public void setUserInfo(Account account){
         // Set avatar image
         String url= ApiUtils.getImageUrl(account.getUrlAvatar());
-        Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatarImage);
+        Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatarImage);
     }
     public String getFileExtension(Uri fileUri){
         File file = FileUtils.getFile(this, fileUri);

@@ -165,10 +165,10 @@ public class FriendWallActivity extends AppCompatActivity {
         biography.setText(account.getBiography());
         // Set avatar image
         String url= ApiUtils.getImageUrl(account.getUrlAvatar());
-        Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).override(500,500).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
+        Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true).override(500,500).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
 
         String url_background= ApiUtils.getImageUrl(account.getUrlBackground());
-        Glide.with(this).load(url_background).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).error(R.color.colorLittleGray)).into(background);
+        Glide.with(this).load(url_background).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true).error(R.color.colorLittleGray)).into(background);
 
         postNumber.setText(getNumber(account.getPostNumber()));
         follower.setText(getNumber(account.getFollowerNumber()));

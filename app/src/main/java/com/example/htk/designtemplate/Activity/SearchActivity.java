@@ -60,6 +60,13 @@ public class SearchActivity extends AppCompatActivity {
         clearIcon = (ImageView) findViewById(R.id.clearImageIcon_searchActivity);
         context= getApplicationContext();
 
+        clearIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchEditText.setText("");
+            }
+        });
+
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

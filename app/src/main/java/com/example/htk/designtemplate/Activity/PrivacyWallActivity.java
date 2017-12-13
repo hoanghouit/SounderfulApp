@@ -168,10 +168,10 @@ public class PrivacyWallActivity extends AppCompatActivity {
         biographyTextView.setText(account.getBiography());
         // Set avatar image
         String url= ApiUtils.getImageUrl(account.getUrlAvatar());
-        Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).override(500,500).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
+        Glide.with(this).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true).override(500,500).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
 
         String url_background= ApiUtils.getImageUrl(account.getUrlBackground());
-        Glide.with(this).load(url_background).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).centerCrop().error(R.color.colorLittleGray)).into(background);
+        Glide.with(this).load(url_background).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true).centerCrop().error(R.color.colorLittleGray)).into(background);
 
         postNumberTextView.setText(getNumber(account.getPostNumber()));
         followerTextView.setText(getNumber(account.getFollowerNumber()));

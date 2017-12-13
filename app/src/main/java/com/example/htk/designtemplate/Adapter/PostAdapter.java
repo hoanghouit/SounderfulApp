@@ -147,11 +147,11 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
         // Set avatar image
         String url= ApiUtils.getImageUrl(post.getAccount().getUrlAvatar());
-        Glide.with(context).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).override(200,200).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
+        Glide.with(context).load(url).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true).override(200,200).circleCrop().error(R.mipmap.ic_avatar_error)).into(avatar);
 
         //Set track image
         String url_image= ApiUtils.getImageUrl(post.getUrlImage());
-        Glide.with(context).load(url_image).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).override(800,400).error(R.color.colorLittleGray)).into(imageTrack);
+        Glide.with(context).load(url_image).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true).override(800,400).centerCrop().error(R.color.colorLittleGray)).into(imageTrack);
 
         // set like icon
 

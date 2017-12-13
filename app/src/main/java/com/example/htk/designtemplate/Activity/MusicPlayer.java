@@ -79,7 +79,7 @@ public class MusicPlayer extends AppCompatActivity {
         postId = getIntent().getExtras().getInt("postId");
 
         // set image track
-        Glide.with(this).load(ApiUtils.getImageUrl(urlImage)).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL).override(600,600).circleCrop().error(R.drawable.circle_gray_background)).into(imageTrack);
+        Glide.with(this).load(ApiUtils.getImageUrl(urlImage)).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true).override(600,600).circleCrop().error(R.drawable.circle_gray_background)).into(imageTrack);
 
         // set title song
         titleTextView.setText(title);
@@ -164,7 +164,7 @@ public class MusicPlayer extends AppCompatActivity {
         mediaPlayer.stop();
     }
 
-    
+
     protected void createMediaPlayer(){
         String url = ApiUtils.getTrackUrl(urlTrack);
         //String url = "https://drive.google.com/uc?export=download&id=12WSdJFxUZrV-rX6vMQz47OTKeOpd1IC3";
