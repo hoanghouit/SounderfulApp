@@ -122,15 +122,12 @@ public class FriendWallActivity extends AppCompatActivity {
         followButton.setBackgroundResource(R.color.colorWhite);
         followButton.setTextColor(getResources().getColor(R.color.colorDark));
         followButton.setText(R.string.follow);
-        int followerNumber = Integer.parseInt(follower.getText().toString())-1;
-        follower.setText(getNumber(followerNumber));
     }
     public void followUI(){
         followButton.setBackgroundResource(R.color.colorBlue);
         followButton.setTextColor(getResources().getColor(R.color.colorWhite));
         followButton.setText(R.string.following);
-        int followerNumber = Integer.parseInt(follower.getText().toString())+1;
-        follower.setText(getNumber(followerNumber));
+
     }
 
     public void loadUserInfo(){
@@ -258,6 +255,8 @@ public class FriendWallActivity extends AppCompatActivity {
             public void onResponse(Call<FollowingModel> call, Response<FollowingModel> response) {
                 if(response.isSuccessful()) {
                    followUI();
+                    int followerNumber = Integer.parseInt(follower.getText().toString())+1;
+                    follower.setText(getNumber(followerNumber));
                    isFollowing = true;
                    Log.d(tag, "create isFollowing from API");
                 }else {
@@ -278,6 +277,8 @@ public class FriendWallActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
                     unfollowUI();
+                    int followerNumber = Integer.parseInt(follower.getText().toString())-1;
+                    follower.setText(getNumber(followerNumber));
                     isFollowing = false;
                     Log.d(tag, "delete isFollowing from API");
                 }else {

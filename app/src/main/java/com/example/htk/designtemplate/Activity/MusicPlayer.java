@@ -155,10 +155,16 @@ public class MusicPlayer extends AppCompatActivity {
     @Override
     protected void onStop(){
         super.onStop();
+        mediaPlayer.pause();
+        imgPlay.setImageResource(R.drawable.ic_play_song);
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
         mediaPlayer.stop();
     }
 
-
+    
     protected void createMediaPlayer(){
         String url = ApiUtils.getTrackUrl(urlTrack);
         //String url = "https://drive.google.com/uc?export=download&id=12WSdJFxUZrV-rX6vMQz47OTKeOpd1IC3";

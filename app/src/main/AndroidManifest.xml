@@ -21,7 +21,8 @@
             android:label="@string/title_activity_privacy_wall"
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Activity.FriendWallActivity" />
+        <activity android:name=".Activity.FriendWallActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".Activity.SearchActivity"
             android:launchMode="singleTask" />
